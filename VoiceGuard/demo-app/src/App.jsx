@@ -5,6 +5,7 @@ import './index.css';
 import AIEngineConsole from './components/AIEngineConsole';
 import PhoneFrame from './components/PhoneFrame';
 import FamilyDashboard from './components/FamilyDashboard';
+import DocumentPage from './components/DocumentViewer';
 
 // Screens inside PhoneFrame
 import IncomingCall from './components/IncomingCall';
@@ -12,11 +13,12 @@ import ActiveCall from './components/ActiveCall';
 import MicroLearning from './components/MicroLearning';
 
 function App() {
-  // Granular State Machine (0 to 7)
+  // Granular State Machine (0 to 7, 8 = document page)
   const [demoState, setDemoState] = useState(0);
   const [isOptIn, setIsOptIn] = useState(true);
 
   const handleKeyPress = useCallback((event) => {
+    if (demoState === 8) return; // Don't advance when on document page
     if (event.code === 'Space') {
       event.preventDefault();
       setDemoState((prev) => {
@@ -32,7 +34,7 @@ function App() {
         return prev + 1;
       });
     }
-  }, [isOptIn]);
+  }, [isOptIn, demoState]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
@@ -49,6 +51,11 @@ function App() {
     setDemoState(0);
   };
 
+  // State 8 = full-page document view
+  if (demoState === 8) {
+    return <DocumentPage onBack={() => setDemoState(7)} />;
+  }
+
   // Render the appropriate screen inside the Phone Frame
   const renderPhoneScreen = () => {
     if (demoState === 0) return <IncomingCall onAnswer={() => setDemoState(1)} />;
@@ -61,7 +68,7 @@ function App() {
         />
       );
     }
-    if (demoState === 7) return <MicroLearning onReset={handleReset} />;
+    if (demoState === 7) return <MicroLearning onReset={handleReset} onViewDocument={() => setDemoState(8)} />;
     
     return <IncomingCall onAnswer={() => setDemoState(1)} />;
   };
