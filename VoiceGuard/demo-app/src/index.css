@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=SF+Pro+Display:wght@400;500;600&display=swap');
+
+:root {
+  /* Vercel Dark Mode Palette */
+  --bg-desktop: #000000;
+  --bg-panel: #0a0a0a;
+  --bg-phone: #000000;
+  --bg-family: #0a0a0a;
+  
+  /* Text */
+  --text-main: #ffffff;
+  --text-muted: #888888;
+  --text-dark: #000000;
+  
+  /* Accents */
+  --color-danger: #ff3b30;
+  --color-success: #34c759;
+  --color-warning: #ffcc00;
+  --color-info: #007aff;
+  
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-desktop);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Layout --- */
+.god-mode-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr 350px;
+  width: 100vw;
+  height: 100vh;
+  gap: 24px;
+  padding: 24px;
+  align-items: stretch;
+}
+
+/* --- Shared Panel Styles (Enterprise Minimal) --- */
+.panel {
+  background-color: var(--bg-panel);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* --- Column 1: AI Console --- */
+.console-panel {
+  background: var(--bg-panel);
+}
+
+.console-header {
+  padding: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.console-content {
+  padding: 24px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* --- Column 2: Phone Bezel (Hyper-Realistic) --- */
+.phone-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.phone-bezel {
+  width: 380px;
+  height: 800px;
+  background: radial-gradient(circle at 50% 0%, #1a1a1c 0%, #000000 70%);
+  border-radius: 48px;
+  box-shadow: 0 0 0 12px #111111, 
+              0 0 0 13px #222222,
+              0 40px 80px rgba(0, 0, 0, 1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  align-self: center;
+}
+
+/* Dynamic Island */
+.dynamic-island {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 32px;
+  background: #000;
+  border-radius: 16px;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+}
+
+/* Gesture Bar */
+.gesture-bar {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 5px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 10px;
+  z-index: 100;
+}
+
+/* Status Bar */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px 0 24px;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 90;
+}
+
+.phone-screen-content {
+  flex: 1;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Column 3: Family Dashboard --- */
+.family-panel {
+  background: var(--bg-family);
+  color: var(--text-main);
+}
+
+.family-header {
+  padding: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.family-content {
+  background: transparent;
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* --- UI Utilities --- */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.glass-btn {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.glass-btn:active {
+  transform: scale(0.9);
+  background: rgba(255,255,255,0.3);
+}
+
+/* --- Premium Animations --- */
+@keyframes smoothFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes edgePulse {
+  0% { box-shadow: inset 0 0 0px 0px rgba(255, 59, 48, 0); }
+  50% { box-shadow: inset 0 0 60px 10px rgba(255, 59, 48, 0.8); }
+  100% { box-shadow: inset 0 0 0px 0px rgba(255, 59, 48, 0); }
+}
+
+@keyframes cameraShake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+  50% { transform: translate(1px, -1px) rotate(0.5deg); }
+  75% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes skeletonLoading {
+  0% { background-color: rgba(255,255,255,0.05); }
+  50% { background-color: rgba(255,255,255,0.1); }
+  100% { background-color: rgba(255,255,255,0.05); }
+}
+
+@keyframes waveformLine {
+  0% { height: 10px; }
+  50% { height: 40px; }
+  100% { height: 10px; }
+}
+
+/* Toggle Switch (Apple Style) */
+.switch { position: relative; display: inline-block; width: 51px; height: 31px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #e9e9ea; transition: 0.3s; border-radius: 31px;
+}
+.slider:before {
+  position: absolute; content: ""; height: 27px; width: 27px;
+  left: 2px; bottom: 2px; background-color: white; transition: 0.3s; 
+  border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+input:checked + .slider { background-color: var(--color-success); }
+input:checked + .slider:before { transform: translateX(20px); }
