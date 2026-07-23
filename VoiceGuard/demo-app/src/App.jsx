@@ -68,22 +68,30 @@ function App() {
 
   return (
     <div className="god-mode-layout">
-      {/* Column 1: AI Backend Console */}
-      <AIEngineConsole demoState={demoState} />
+      {/* Column 1: AI Backend Console (Floating Widget) */}
+      {demoState >= 1 && (
+        <div className="widget-left">
+          <AIEngineConsole demoState={demoState} />
+        </div>
+      )}
       
-      {/* Column 2: Victim's Phone */}
+      {/* Column 2: Victim's Phone (Hero Center) */}
       <div className="phone-container">
-        <PhoneFrame isShake={demoState >= 6}>
+        <PhoneFrame isShake={false}>
           {renderPhoneScreen()}
         </PhoneFrame>
       </div>
 
-      {/* Column 3: Family Monitoring Dashboard */}
-      <FamilyDashboard 
-        demoState={demoState} 
-        isOptIn={isOptIn} 
-        setIsOptIn={setIsOptIn} 
-      />
+      {/* Column 3: Family Monitoring Dashboard (Floating Widget) */}
+      {demoState >= 6 && (
+        <div className="widget-right">
+          <FamilyDashboard 
+            demoState={demoState} 
+            isOptIn={isOptIn} 
+            setIsOptIn={setIsOptIn} 
+          />
+        </div>
+      )}
     </div>
   );
 }

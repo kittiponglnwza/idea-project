@@ -36,23 +36,56 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* --- Layout --- */
+/* --- Layout (Apple Keynote Style) --- */
 .god-mode-layout {
-  display: grid;
-  grid-template-columns: 350px 1fr 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
-  gap: 24px;
-  padding: 24px;
-  align-items: stretch;
+  position: relative;
+  overflow: hidden;
 }
 
-/* --- Shared Panel Styles (Enterprise Minimal) --- */
+/* --- Floating Widgets --- */
+.widget-left {
+  position: absolute;
+  left: max(5%, calc(50% - 220px - 280px)); /* Keeps it nicely beside the phone */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 280px;
+  z-index: 20;
+  animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.widget-right {
+  position: absolute;
+  right: max(5%, calc(50% - 220px - 320px));
+  top: 50%;
+  transform: translateY(-50%);
+  width: 320px;
+  z-index: 20;
+  animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translate(-30px, -50%); }
+  to { opacity: 1; transform: translate(0, -50%); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translate(30px, -50%); }
+  to { opacity: 1; transform: translate(0, -50%); }
+}
+
+/* --- Shared Panel Styles (Floating Glass Widget) --- */
 .panel {
-  background-color: var(--bg-panel);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  background: rgba(10, 10, 10, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -91,10 +124,11 @@ body {
 .phone-bezel {
   width: 380px;
   height: 800px;
-  background: radial-gradient(circle at 50% 0%, #1a1a1c 0%, #000000 70%);
+  background: radial-gradient(circle at 50% 0%, #1c1c1e 0%, #000000 80%);
   border-radius: 48px;
-  box-shadow: 0 0 0 12px #111111, 
-              0 0 0 13px #222222,
+  box-shadow: 0 0 0 8px #0a0a0a, 
+              0 0 0 10px #555555,
+              0 0 0 11px #333333,
               0 40px 80px rgba(0, 0, 0, 1);
   position: relative;
   display: flex;
@@ -111,13 +145,15 @@ body {
   transform: translateX(-50%);
   width: 120px;
   height: 32px;
-  background: #000;
-  border-radius: 16px;
-  z-index: 100;
+  background-color: #000000;
+  border-radius: 20px;
+  z-index: 50;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding: 0 12px;
+  gap: 8px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 /* Gesture Bar */
@@ -155,22 +191,22 @@ body {
 
 /* --- Column 3: Family Dashboard --- */
 .family-panel {
-  background: var(--bg-family);
+  /* Inherits .panel now */
   color: var(--text-main);
 }
 
 .family-header {
-  padding: 24px;
+  padding: 16px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .family-content {
   background: transparent;
   flex: 1;
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 /* --- UI Utilities --- */
@@ -243,3 +279,67 @@ body {
 }
 input:checked + .slider { background-color: var(--color-success); }
 input:checked + .slider:before { transform: translateX(20px); }
+
+/* --- Responsive Design (Laptops, Mobile & Tablet) --- */
+
+/* Fix for Laptops (Short screen height) */
+@media (max-height: 900px) {
+  .phone-container { zoom: 0.85; }
+}
+@media (max-height: 750px) {
+  .phone-container { zoom: 0.75; }
+}
+@media (max-height: 650px) {
+  .phone-container { zoom: 0.65; }
+}
+
+@media (max-width: 1400px) {
+  .widget-left { left: 2%; width: 300px; }
+  .widget-right { right: 2%; width: 300px; }
+}
+
+@media (max-width: 1200px) {
+  .widget-left { left: 1%; width: 280px; }
+  .widget-right { right: 1%; width: 280px; }
+}
+
+@media (max-width: 900px) {
+  .god-mode-layout {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    padding: 40px 20px;
+    gap: 40px;
+    overflow-y: auto;
+    justify-content: flex-start;
+  }
+  
+  .widget-left, .widget-right {
+    position: relative;
+    left: 0; right: 0;
+    top: 0;
+    transform: none;
+    width: 100%;
+    max-width: 400px;
+    animation: smoothFadeIn 0.5s ease-out forwards;
+  }
+  
+  .phone-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .phone-bezel {
+    transform-origin: top center;
+    transform: scale(0.9);
+    margin-bottom: -80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .phone-bezel {
+    transform: scale(0.85);
+    margin-bottom: -120px;
+  }
+}
