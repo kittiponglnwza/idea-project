@@ -131,7 +131,7 @@ function App() {
         )}
 
         {/* Premium Document Button (Sits under the dashboard) */}
-        {demoState !== 8 && (
+        {demoState === 7 && (
           <div 
             onClick={() => setDemoState(8)}
             style={{
