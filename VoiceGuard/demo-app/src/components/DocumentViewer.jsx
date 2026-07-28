@@ -1,8 +1,27 @@
 import { Shield, Zap, Cpu, Scale, Trophy, Briefcase, ChevronLeft, FileText } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 
 export default function DocumentPage({ onBack }) {
   const containerRef = useRef(null);
+
+  // Scroll Reveal Animation Effect
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { 
+      threshold: 0.1, // Trigger when 10% visible
+      root: containerRef.current 
+    });
+
+    const sections = document.querySelectorAll('.doc-section');
+    sections.forEach(sec => observer.observe(sec));
+
+    return () => observer.disconnect();
+  }, []);
 
   const scrollTo = (id) => {
     const element = document.getElementById(id);
@@ -45,16 +64,19 @@ export default function DocumentPage({ onBack }) {
           from { opacity: 0; }
           to { opacity: 1; }
         }
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
+        
+        /* Scroll Reveal Initial State */
+        .doc-section { 
+          opacity: 0; 
+          transform: translateY(60px); 
+          transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .doc-section { animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
-        .doc-section:nth-child(2) { animation-delay: 0.05s; }
-        .doc-section:nth-child(3) { animation-delay: 0.1s; }
-        .doc-section:nth-child(4) { animation-delay: 0.15s; }
-        .doc-section:nth-child(5) { animation-delay: 0.2s; }
-        .doc-section:nth-child(6) { animation-delay: 0.25s; }
+        
+        /* Scroll Reveal Visible State */
+        .doc-section.visible { 
+          opacity: 1; 
+          transform: translateY(0); 
+        }
         
         .bento-card {
           background: #1d1d1f;
