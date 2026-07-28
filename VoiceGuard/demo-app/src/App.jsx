@@ -18,8 +18,8 @@ function App() {
   const [demoState, setDemoState] = useState(0);
   const [isOptIn, setIsOptIn] = useState(true);
   
-  // Auto-trigger simulation when call is active (State 2 to 5)
-  const isLiveMode = demoState >= 2 && demoState < 6;
+  // Auto-trigger simulation when call is active (State 1 to 5)
+  const isLiveMode = demoState >= 1 && demoState < 6;
 
   // Trigger when Live AI detects high risk
   const handleRiskExceeded = useCallback(() => {

@@ -9,17 +9,13 @@ export default function AIEngineConsole({
   interimTranscript 
 }) {
   
-  const currentRiskScore = (demoState >= 2) ? liveRiskScore : getMockRiskScore(demoState);
+  const currentRiskScore = (demoState >= 1) ? liveRiskScore : getMockRiskScore(demoState);
   
-  // Combine base logs (state 0,1) with live logs (state >= 2) and ending logs (state >= 6)
+  // Combine base logs (state 0) with live logs (state >= 1) and ending logs (state >= 6)
   let logs = [];
   if (demoState >= 0) logs.push({ text: "System idle. Awaiting audio stream..." });
-  if (demoState >= 1) {
-    logs.push({ text: "Stream established. Scanning for known threats..." });
-    logs.push({ text: "Metadata checked. Caller ID: Unknown." });
-  }
   
-  if (demoState >= 2) {
+  if (demoState >= 1) {
     logs = [...logs, ...liveLogs];
   }
   
@@ -55,7 +51,7 @@ export default function AIEngineConsole({
         
         {/* Title Row */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%' }}>
-          <Activity size={20} color={demoState >= 2 ? "#ff3b30" : "#8e8e93"} className={demoState >= 2 ? "pulse-animation" : ""} />
+          <Activity size={20} color={demoState >= 1 ? "#ff3b30" : "#8e8e93"} className={demoState >= 1 ? "pulse-animation" : ""} />
           <span style={{ fontSize: '0.95rem', fontWeight: '700', letterSpacing: '0.5px' }}>
             VOICEGUARD ENGINE
           </span>
