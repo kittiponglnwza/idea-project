@@ -113,6 +113,21 @@ body {
   gap: 16px;
 }
 
+/* Custom Dark Scrollbar */
+.console-content::-webkit-scrollbar {
+  width: 6px;
+}
+.console-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.console-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+.console-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
 /* --- Column 2: Phone Bezel (Hyper-Realistic) --- */
 .phone-container {
   display: flex;

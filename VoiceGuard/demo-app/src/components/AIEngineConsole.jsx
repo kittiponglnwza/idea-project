@@ -52,7 +52,7 @@ export default function AIEngineConsole({
         {/* Title Row */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%' }}>
           <Activity size={20} color={demoState >= 1 ? "#ff3b30" : "#8e8e93"} className={demoState >= 1 ? "pulse-animation" : ""} />
-          <span style={{ fontSize: '0.95rem', fontWeight: '700', letterSpacing: '0.5px' }}>
+          <span style={{ fontSize: '0.95rem', fontWeight: '700', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>
             VOICEGUARD ENGINE
           </span>
           <div style={{ flex: 1 }}></div>
@@ -61,7 +61,7 @@ export default function AIEngineConsole({
             display: 'flex', alignItems: 'center', gap: '6px', 
             background: currentRiskScore > 80 ? 'rgba(255, 59, 48, 0.1)' : 'rgba(52, 199, 89, 0.1)',
             color: currentRiskScore > 80 ? '#ff3b30' : '#34c759',
-            padding: '4px 10px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: '700'
+            padding: '4px 10px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: '700', whiteSpace: 'nowrap'
           }}>
             {currentRiskScore > 80 ? <AlertTriangle size={14} /> : <ShieldCheck size={14} />}
             {currentRiskScore > 80 ? 'HIGH THREAT' : 'MONITORING'}
