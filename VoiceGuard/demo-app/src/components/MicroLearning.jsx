@@ -54,16 +54,7 @@ export default function MicroLearning({ onReset, onViewDocument }) {
           }}>
           แจ้งความออนไลน์ (thaipoliceonline.com)
         </button>
-        <button 
-          onClick={onViewDocument}
-          style={{
-            background: '#2563eb', color: 'white', padding: '1rem', borderRadius: '12px',
-            border: 'none', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer',
-            boxShadow: '0 4px 10px rgba(37, 99, 235, 0.3)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem'
-          }}>
-          📄 เอกสาร
-        </button>
+
         <button 
           onClick={onReset}
           style={{
