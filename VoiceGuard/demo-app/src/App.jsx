@@ -17,7 +17,9 @@ function App() {
   // Granular State Machine (0 to 7, 8 = document page)
   const [demoState, setDemoState] = useState(0);
   const [isOptIn, setIsOptIn] = useState(true);
-  const [isLiveMode, setIsLiveMode] = useState(false);
+  
+  // Auto-trigger simulation when call is active (State 2 to 5)
+  const isLiveMode = demoState >= 2 && demoState < 6;
 
   // Trigger when Live AI detects high risk
   const handleRiskExceeded = useCallback(() => {
@@ -90,7 +92,6 @@ function App() {
           <AIEngineConsole 
             demoState={demoState} 
             isLiveMode={isLiveMode}
-            setIsLiveMode={setIsLiveMode}
             liveRiskScore={riskScore}
             liveLogs={aiLogs}
             interimTranscript={interimTranscript}
