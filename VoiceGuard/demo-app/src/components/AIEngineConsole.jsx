@@ -79,7 +79,7 @@ export default function AIEngineConsole({
             }}
           >
             {isLiveMode ? <Mic size={14} /> : <MicOff size={14} />}
-            {isLiveMode ? 'LIVE AI : ON' : 'LIVE AI : OFF'}
+            {isLiveMode ? 'SIMULATE SCAM : ON' : 'SIMULATE SCAM : OFF'}
           </button>
 
           {/* Status Badge */}

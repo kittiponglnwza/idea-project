@@ -1,114 +1,88 @@
-// src/hooks/useRealTimeAI.js
 import { useState, useEffect, useRef } from 'react';
 import { evaluateRisk } from '../utils/aiEngine';
+
+const SCAM_SCRIPT = [
+  "สวัสดีครับ", "ผมเป็นตำรวจ", "จาก", "สภ.เมือง", 
+  "ตอนนี้", "มีการแอบอ้าง", "ชื่อคุณ", "ไป", "ฟอกเงิน", 
+  "รบกวน", "ให้คุณ", "โอนเงิน", "ทั้งหมด", "มาเพื่อ", "ตรวจสอบ", "ด่วนครับ", 
+  "และ", "ห้ามบอกใคร", "เด็ดขาดนะ"
+];
 
 export function useRealTimeAI(isLiveMode, onRiskExceeded) {
   const [transcript, setTranscript] = useState('');
   const [interimTranscript, setInterimTranscript] = useState('');
   const [riskScore, setRiskScore] = useState(0);
   const [aiLogs, setAiLogs] = useState([]);
-  const recognitionRef = useRef(null);
+  
+  const timerRef = useRef(null);
+  const wordIndexRef = useRef(0);
 
   useEffect(() => {
-    // If Live Mode is off, stop listening
     if (!isLiveMode) {
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-        recognitionRef.current = null;
-      }
+      if (timerRef.current) clearInterval(timerRef.current);
+      window.speechSynthesis.cancel(); // Stop speaking
       return;
     }
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      setAiLogs(prev => [...prev, { text: "Error: Speech Recognition API not supported in this browser. Use Chrome.", type: 'alert' }]);
-      return;
-    }
+    // 1. Start speaking the text (TTS)
+    const fullText = SCAM_SCRIPT.join(" ");
+    const utterance = new SpeechSynthesisUtterance(fullText);
+    utterance.lang = 'th-TH';
+    utterance.rate = 0.9; // Slightly slower for dramatic effect
+    window.speechSynthesis.speak(utterance);
 
-    const recognition = new SpeechRecognition();
-    recognitionRef.current = recognition;
-    
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = 'th-TH';
+    // 2. Simulate Real-time STT typing out
+    setAiLogs([{ text: "Auto-Simulation Started. Generating Scam Audio...", type: 'system' }]);
+    setTranscript('');
+    setInterimTranscript('');
+    setRiskScore(0);
+    wordIndexRef.current = 0;
 
-    recognition.onstart = () => {
-      setAiLogs([{ text: "Live Mic Activated. Listening for Thai language...", type: 'system' }]);
-      setTranscript('');
-      setInterimTranscript('');
-      setRiskScore(0);
-    };
+    let currentTranscript = "";
 
-    recognition.onresult = (event) => {
-      let finalTranscriptChunk = '';
-      let interimTranscriptChunk = '';
-
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) {
-          finalTranscriptChunk += event.results[i][0].transcript;
-        } else {
-          interimTranscriptChunk += event.results[i][0].transcript;
-        }
+    timerRef.current = setInterval(() => {
+      if (wordIndexRef.current >= SCAM_SCRIPT.length) {
+        clearInterval(timerRef.current);
+        return;
       }
 
-      setInterimTranscript(interimTranscriptChunk);
+      const word = SCAM_SCRIPT[wordIndexRef.current];
+      currentTranscript += (wordIndexRef.current === 0 ? "" : " ") + word;
+      setInterimTranscript(word + "...");
       
-      if (finalTranscriptChunk.trim() !== '') {
-        setTranscript(prev => {
-          const newTranscript = prev + " " + finalTranscriptChunk;
-          
-          // Evaluate Risk on new text
-          const riskData = evaluateRisk(newTranscript);
-          setRiskScore(riskData.score);
-          
-          const newLogs = [
-            { text: `[VOICE]: ${finalTranscriptChunk}`, isCode: true },
-            ...riskData.logs
-          ];
-          
-          setAiLogs(prevLogs => [...prevLogs, ...newLogs]);
-
-          // Trigger cutoff if > 85
-          if (riskData.score > 85 && onRiskExceeded) {
-             onRiskExceeded();
-          }
-
-          return newTranscript;
-        });
-      }
-    };
-
-    recognition.onerror = (event) => {
-      if (event.error !== 'no-speech') {
-         setAiLogs(prev => [...prev, { text: `Mic Error: ${event.error}`, type: 'alert' }]);
-      }
-    };
-
-    recognition.onend = () => {
-      // Auto-restart if we are still in Live Mode and it disconnected (e.g. timeout)
-      if (isLiveMode && recognitionRef.current) {
-        try {
-          recognitionRef.current.start();
-        } catch (e) {
-          console.error("Restart failed", e);
+      // Update transcript and evaluate risk
+      setTranscript(currentTranscript);
+      const riskData = evaluateRisk(currentTranscript);
+      setRiskScore(riskData.score);
+      
+      setAiLogs(prevLogs => {
+        const newLogs = [{ text: `[VOICE]: ${word}`, isCode: true }];
+        // Only append new unique intent logs (simplified for simulation)
+        if (riskData.logs.length > 0) {
+            // Find logs that aren't already in prevLogs
+            const existingLogTexts = prevLogs.map(l => l.text);
+            const freshLogs = riskData.logs.filter(l => !existingLogTexts.includes(l.text));
+            newLogs.push(...freshLogs);
         }
-      }
-    };
+        return [...prevLogs, ...newLogs];
+      });
 
-    try {
-      recognition.start();
-    } catch (e) {
-      console.error(e);
-    }
+      if (riskData.score > 85 && onRiskExceeded) {
+        clearInterval(timerRef.current);
+        window.speechSynthesis.cancel(); // Stop talking when cut
+        onRiskExceeded();
+      }
+
+      wordIndexRef.current += 1;
+    }, 450); // New word every 450ms (roughly matches speaking rate)
 
     return () => {
-      if (recognitionRef.current) {
-        // Prevent auto-restart loop
-        recognitionRef.current.onend = null; 
-        recognitionRef.current.stop();
-      }
+      if (timerRef.current) clearInterval(timerRef.current);
+      window.speechSynthesis.cancel();
     };
-  }, [isLiveMode]); // Note: onRiskExceeded omitted from deps intentionally to avoid reconnect loop
+  }, [isLiveMode]); 
+  
+  // onRiskExceeded omitted from deps intentionally to avoid infinite loops
 
   return { transcript, interimTranscript, riskScore, aiLogs };
 }
