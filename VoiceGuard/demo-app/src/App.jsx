@@ -121,35 +121,57 @@ function App() {
       </div>
 
       {/* Column 3: Family Monitoring Dashboard (Floating Widget) */}
-      {demoState >= 6 && (
-        <div className="widget-right">
+      <div className="widget-right" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        {demoState >= 6 && (
           <FamilyDashboard 
             demoState={demoState} 
             isOptIn={isOptIn} 
             setIsOptIn={setIsOptIn} 
           />
-        </div>
-      )}
+        )}
 
-      {/* Floating Document Button */}
-      {demoState !== 8 && (
-        <div 
-          onClick={() => setDemoState(8)}
-          style={{
-            position: 'absolute', bottom: '24px', right: '24px', 
-            background: 'rgba(255,255,255,0.1)', padding: '12px 20px', 
-            borderRadius: '100px', backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.2)', color: 'white',
-            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px',
-            fontWeight: '600', fontSize: '0.85rem', zIndex: 100
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
-          onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
-        >
-          <span style={{ fontSize: '1.2rem' }}>📄</span>
-          Executive Summary
-        </div>
-      )}
+        {/* Premium Document Button (Sits under the dashboard) */}
+        {demoState !== 8 && (
+          <div 
+            onClick={() => setDemoState(8)}
+            style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02))',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              padding: '16px 24px',
+              borderRadius: '20px',
+              color: 'white',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              fontWeight: '600',
+              fontSize: '0.95rem',
+              letterSpacing: '0.5px',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2)',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              width: '100%'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))';
+              e.currentTarget.style.boxShadow = '0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02))';
+              e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+            }}
+          >
+            <span style={{ fontSize: '1.2rem' }}>📄</span>
+            <span>Business Plan & PDPA</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
