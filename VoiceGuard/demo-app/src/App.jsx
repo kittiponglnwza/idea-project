@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useRealTimeAI } from './hooks/useRealTimeAI';
 import './index.css';
 
 // Components
@@ -16,6 +17,14 @@ function App() {
   // Granular State Machine (0 to 7, 8 = document page)
   const [demoState, setDemoState] = useState(0);
   const [isOptIn, setIsOptIn] = useState(true);
+  const [isLiveMode, setIsLiveMode] = useState(false);
+
+  // Trigger when Live AI detects high risk
+  const handleRiskExceeded = useCallback(() => {
+    setDemoState(6); // Jump straight to Warning state
+  }, []);
+
+  const { interimTranscript, riskScore, aiLogs } = useRealTimeAI(isLiveMode, handleRiskExceeded);
 
   const handleKeyPress = useCallback((event) => {
     if (demoState === 8) return; // Don't advance when on document page
@@ -78,7 +87,14 @@ function App() {
       {/* Column 1: AI Backend Console (Floating Widget) */}
       {demoState >= 1 && (
         <div className="widget-left">
-          <AIEngineConsole demoState={demoState} />
+          <AIEngineConsole 
+            demoState={demoState} 
+            isLiveMode={isLiveMode}
+            setIsLiveMode={setIsLiveMode}
+            liveRiskScore={riskScore}
+            liveLogs={aiLogs}
+            interimTranscript={interimTranscript}
+          />
         </div>
       )}
       
