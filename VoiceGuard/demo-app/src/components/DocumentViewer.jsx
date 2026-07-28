@@ -221,18 +221,18 @@ export default function DocumentPage({ onBack }) {
           </div>
 
           <div className="bento-card" style={{ marginBottom: '1.5rem' }}>
-            <h4 style={{ color: '#f5f5f7', marginBottom: '1rem', fontSize: '1.3rem' }}>VoiceGuard Extraction Pipeline</h4>
+            <h4 style={{ color: '#f5f5f7', marginBottom: '1rem', fontSize: '1.3rem' }}>Data Extraction Pipeline</h4>
             <div className="bento-grid-2">
               <div>
-                <h5 style={{ color: '#0071e3', marginBottom: '0.5rem', fontSize: '1.1rem' }}>OS-Level Accessibility Hook</h5>
+                <h5 style={{ color: '#0071e3', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Method 1: Accessibility</h5>
                 <p style={{ color: '#86868b', fontSize: '1rem', lineHeight: 1.6 }}>
-                  เข้าถึงข้อมูลการโทรอย่างปลอดภัยผ่าน <strong style={{ color: '#f5f5f7' }}>Android AccessibilityService API</strong> เพื่อหลีกเลี่ยงข้อจำกัดการดักฟัง Audio Stream ของระบบปฏิบัติการโดยตรง
+                  เจาะจงใช้ Accessibility Service ดึง Text จาก "Samsung Call Captions" (รองรับไทย 100% ไม่ต้องดักฟัง Audio Stream เอง)
                 </p>
               </div>
               <div>
-                <h5 style={{ color: '#0071e3', marginBottom: '0.5rem', fontSize: '1.1rem' }}>On-Device STT Engine</h5>
+                <h5 style={{ color: '#0071e3', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Method 2: Protected Speaker</h5>
                 <p style={{ color: '#86868b', fontSize: '1rem', lineHeight: 1.6 }}>
-                  ใช้โมเดล Speech-to-Text ภาษาไทยขนาดเล็ก (Quantized Model) ที่ปรับแต่งมาเฉพาะกิจ รันบน <strong style={{ color: '#f5f5f7' }}>NPU/CPU ของมือถือ</strong> โดยตรง เพื่อความเร็วระดับ Real-time
+                  เปิดลำโพงอัตโนมัติเมื่อรับสายแปลกหน้า และใช้ไมโครโฟนส่งเสียงเข้า On-device Thai STT ขนาดเล็ก
                 </p>
               </div>
             </div>
