@@ -50,10 +50,10 @@ body {
 /* --- Floating Widgets --- */
 .widget-left {
   position: absolute;
-  left: max(5%, calc(50% - 220px - 280px)); /* Keeps it nicely beside the phone */
+  left: max(2%, calc(50% - 220px - 360px)); /* Keeps it nicely beside the phone */
   top: 50%;
   transform: translateY(-50%);
-  width: 280px;
+  width: 360px;
   z-index: 20;
   animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -309,12 +309,12 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 @media (max-width: 1400px) {
-  .widget-left { left: 2%; width: 300px; }
+  .widget-left { left: 2%; width: 320px; }
   .widget-right { right: 2%; width: 300px; }
 }
 
 @media (max-width: 1200px) {
-  .widget-left { left: 1%; width: 280px; }
+  .widget-left { left: 1%; width: 300px; }
   .widget-right { right: 1%; width: 280px; }
 }
 
