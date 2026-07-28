@@ -26,6 +26,20 @@ function App() {
     setDemoState(6); // Jump straight to Warning state
   }, []);
 
+  // Zero-Click Auto Drop Effect
+  useEffect(() => {
+    let timeoutId;
+    if (demoState === 6 && isOptIn) {
+      // Flash red for 2.5s then auto terminate
+      timeoutId = setTimeout(() => {
+        setDemoState(7);
+      }, 2500);
+    }
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [demoState, isOptIn]);
+
   const { interimTranscript, riskScore, aiLogs } = useRealTimeAI(isLiveMode, handleRiskExceeded);
 
   const handleKeyPress = useCallback((event) => {
@@ -114,6 +128,26 @@ function App() {
             isOptIn={isOptIn} 
             setIsOptIn={setIsOptIn} 
           />
+        </div>
+      )}
+
+      {/* Floating Document Button */}
+      {demoState !== 8 && (
+        <div 
+          onClick={() => setDemoState(8)}
+          style={{
+            position: 'absolute', bottom: '24px', right: '24px', 
+            background: 'rgba(255,255,255,0.1)', padding: '12px 20px', 
+            borderRadius: '100px', backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255,255,255,0.2)', color: 'white',
+            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px',
+            fontWeight: '600', fontSize: '0.85rem', zIndex: 100
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
+          onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+        >
+          <span style={{ fontSize: '1.2rem' }}>📄</span>
+          Executive Summary
         </div>
       )}
     </div>
