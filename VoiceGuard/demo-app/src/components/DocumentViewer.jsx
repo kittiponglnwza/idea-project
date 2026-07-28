@@ -1,15 +1,44 @@
-import { Shield, Zap, Cpu, Scale, Trophy, Briefcase, ChevronLeft, FileText, AlertTriangle, Info } from 'lucide-react';
+import { Shield, Zap, Cpu, Scale, Trophy, Briefcase, ChevronLeft, FileText } from 'lucide-react';
+import { useRef } from 'react';
 
 export default function DocumentPage({ onBack }) {
+  const containerRef = useRef(null);
+
+  const scrollTo = (id) => {
+    const element = document.getElementById(id);
+    const container = containerRef.current;
+    if (element && container) {
+      // offsetTop gives distance from the closest positioned ancestor. 
+      // Since container is the scrolling area, this works perfectly.
+      const topPos = element.offsetTop - 100; 
+      container.scrollTo({
+        top: topPos,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const navItemStyle = {
+    color: '#86868b',
+    fontSize: '0.85rem',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'color 0.2s',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+    padding: '4px 8px'
+  };
+
   return (
-    <div style={{
+    <div ref={containerRef} style={{
       width: '100vw',
       height: '100vh',
-      background: '#000000', // Apple Pro Black
+      background: '#000000', 
       color: '#f5f5f7',
       overflowY: 'auto',
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', sans-serif",
-      animation: 'fadeInDoc 0.5s ease-out'
+      animation: 'fadeInDoc 0.5s ease-out',
+      position: 'relative'
     }}>
       <style>{`
         @keyframes fadeInDoc {
@@ -63,6 +92,10 @@ export default function DocumentPage({ onBack }) {
           justify-content: space-between; 
           align-items: center;
         }
+
+        .nav-link:hover {
+          color: #f5f5f7 !important;
+        }
         
         h1, h2, h3, h4, h5 {
           letter-spacing: -0.02em;
@@ -88,9 +121,15 @@ export default function DocumentPage({ onBack }) {
         >
           <ChevronLeft size={18} /> กลับสู่ Demo
         </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Shield size={20} color="#0071e3" />
-          <span style={{ fontWeight: '600', fontSize: '0.95rem', color: '#f5f5f7' }}>Executive Summary</span>
+
+        {/* Landing Page Navigation Links */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <span className="nav-link" style={navItemStyle} onClick={() => scrollTo('sec-summary')}>Summary</span>
+          <span className="nav-link" style={navItemStyle} onClick={() => scrollTo('sec-problem')}>Problem</span>
+          <span className="nav-link" style={navItemStyle} onClick={() => scrollTo('sec-arch')}>Architecture</span>
+          <span className="nav-link" style={navItemStyle} onClick={() => scrollTo('sec-compliance')}>Compliance</span>
+          <span className="nav-link" style={navItemStyle} onClick={() => scrollTo('sec-moat')}>Moat</span>
+          <span className="nav-link" style={navItemStyle} onClick={() => scrollTo('sec-business')}>Business</span>
         </div>
       </div>
 
@@ -112,7 +151,7 @@ export default function DocumentPage({ onBack }) {
         </div>
 
         {/* Section 1: Executive Summary */}
-        <div className="doc-section" style={{ marginBottom: '4rem' }}>
+        <div id="sec-summary" className="doc-section" style={{ marginBottom: '4rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
             <FileText size={28} color="#0071e3" />
             <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>1. บทสรุปผู้บริหาร</h2>
@@ -125,7 +164,7 @@ export default function DocumentPage({ onBack }) {
         </div>
 
         {/* Section 2: Problem & Why Now */}
-        <div className="doc-section" style={{ marginBottom: '4rem' }}>
+        <div id="sec-problem" className="doc-section" style={{ marginBottom: '4rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
             <Zap size={28} color="#ff9f0a" />
             <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>2. ปัญหาและโอกาส</h2>
@@ -153,7 +192,7 @@ export default function DocumentPage({ onBack }) {
         </div>
 
         {/* Section 3: Technical Architecture */}
-        <div className="doc-section" style={{ marginBottom: '4rem' }}>
+        <div id="sec-arch" className="doc-section" style={{ marginBottom: '4rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
             <Cpu size={28} color="#0071e3" />
             <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>3. สถาปัตยกรรมระบบ</h2>
@@ -197,7 +236,7 @@ export default function DocumentPage({ onBack }) {
         </div>
 
         {/* Section 4: Defense Strategy */}
-        <div className="doc-section" style={{ marginBottom: '4rem' }}>
+        <div id="sec-compliance" className="doc-section" style={{ marginBottom: '4rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
             <Scale size={28} color="#ff375f" />
             <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>4. กฎหมายและข้อจำกัด (Compliance)</h2>
@@ -222,7 +261,7 @@ export default function DocumentPage({ onBack }) {
         </div>
 
         {/* Section 5: Competitive Advantage */}
-        <div className="doc-section" style={{ marginBottom: '4rem' }}>
+        <div id="sec-moat" className="doc-section" style={{ marginBottom: '4rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
             <Trophy size={28} color="#bf5af2" />
             <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>5. ความได้เปรียบ (Moat)</h2>
@@ -244,7 +283,7 @@ export default function DocumentPage({ onBack }) {
         </div>
 
         {/* Section 6: Business Model */}
-        <div className="doc-section" style={{ marginBottom: '2rem' }}>
+        <div id="sec-business" className="doc-section" style={{ marginBottom: '2rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
             <Briefcase size={28} color="#30d158" />
             <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>6. โมเดลธุรกิจ (Business Model)</h2>
