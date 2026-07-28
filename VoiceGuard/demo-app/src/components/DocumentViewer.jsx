@@ -261,23 +261,45 @@ export default function DocumentPage({ onBack }) {
         <div id="sec-compliance" className="doc-section" style={{ marginBottom: '4rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
             <Scale size={28} color="#ff375f" />
-            <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>4. กฎหมายและข้อจำกัด (Compliance)</h2>
+            <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>4. กฎหมาย PDPA และความเป็นส่วนตัว (Compliance)</h2>
           </div>
           
-          <div className="bento-card" style={{ borderLeft: '4px solid #ff375f' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+          <div className="bento-card" style={{ borderLeft: '4px solid #ff375f', marginBottom: '1.5rem' }}>
+            <h4 style={{ color: '#f5f5f7', marginBottom: '1.5rem', fontSize: '1.3rem' }}>3-Layer PDPA Defense Strategy</h4>
+            <div className="bento-grid-3">
               <div>
-                <h5 style={{ color: '#f5f5f7', fontSize: '1.2rem', marginBottom: '0.75rem' }}>Wiretapping (การดักฟัง)</h5>
-                <p style={{ color: '#86868b', fontSize: '1rem', lineHeight: 1.6 }}>
-                  แก้ด้วย <strong style={{ color: '#ff375f' }}>Transient Processing</strong>: แปลงเสียงเป็น Text และประมวลผลบน RAM ทันที ไม่มีการเซฟไฟล์เสียงลงหน่วยความจำถาวร
+                <h5 style={{ color: '#ff375f', fontSize: '1.1rem', marginBottom: '0.75rem' }}>1. Explicit Consent</h5>
+                <p style={{ color: '#86868b', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                  ผู้ใช้งานหรือลูกหลานกดยอมรับเงื่อนไข <strong style={{ color: '#f5f5f7' }}>(Opt-in)</strong> อย่างชัดเจนตอนติดตั้งแอป เพื่ออนุญาตให้ AI ประมวลผลเสียงปกป้องตนเอง
                 </p>
               </div>
               <div>
-                <h5 style={{ color: '#f5f5f7', fontSize: '1.2rem', marginBottom: '0.75rem' }}>PDPA (ข้อมูลมิจฉาชีพ)</h5>
-                <p style={{ color: '#86868b', fontSize: '1rem', lineHeight: 1.6 }}>
-                  อ้างอิงฐาน <strong style={{ color: '#ff375f' }}>Legitimate Interest</strong> เพื่อป้องกันอาชญากรรม (Fraud Prevention) ประมวลผลแบบ On-device ทั้งหมด 100%
+                <h5 style={{ color: '#ff375f', fontSize: '1.1rem', marginBottom: '0.75rem' }}>2. Implied Consent</h5>
+                <p style={{ color: '#86868b', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                  ระบบมี <strong style={{ color: '#f5f5f7' }}>Automated Voice Warning</strong> แจ้งเตือนคู่สายทันทีว่า "สายนี้ถูกคุ้มครองโดย AI" หากคู่สายพูดต่อ ถือเป็นการยินยอมโดยปริยาย
                 </p>
               </div>
+              <div>
+                <h5 style={{ color: '#ff375f', fontSize: '1.1rem', marginBottom: '0.75rem' }}>3. Legitimate Interest</h5>
+                <p style={{ color: '#86868b', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                  อ้างอิงฐาน <strong style={{ color: '#f5f5f7' }}>ประโยชน์อันชอบธรรม</strong> (Fraud Prevention) เพื่อป้องกันอาชญากรรม ซึ่งมีน้ำหนักทางกฎหมายเหนือกว่าสิทธิของมิจฉาชีพ
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bento-grid-2">
+            <div className="bento-card">
+              <h4 style={{ color: '#f5f5f7', fontSize: '1.1rem', marginBottom: '0.75rem' }}>Zero Data Breach (On-Device)</h4>
+              <p style={{ color: '#86868b', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                ทำงานแบบ Local บนชิปมือถือ 100% <strong style={{ color: '#f5f5f7' }}>ไม่มีการส่งไฟล์เสียงหรือข้อความขึ้น Cloud</strong> จึงปิดประตูความเสี่ยงเรื่องข้อมูลรั่วไหลได้อย่างเด็ดขาด
+              </p>
+            </div>
+            <div className="bento-card">
+              <h4 style={{ color: '#f5f5f7', fontSize: '1.1rem', marginBottom: '0.75rem' }}>Transient Processing</h4>
+              <p style={{ color: '#86868b', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                แปลงเสียงเป็น Text และประมวลผลลบจาก RAM ทันที <strong style={{ color: '#f5f5f7' }}>ไม่มีการบันทึกไฟล์เสียง (No Audio Logging)</strong> รอดพ้นข้อหาดักฟัง (Wiretapping)
+              </p>
             </div>
           </div>
         </div>
