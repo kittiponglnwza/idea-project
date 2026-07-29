@@ -9,11 +9,12 @@ export default function DocumentPage({ onBack }) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-12');
         }
       });
     }, { 
-      threshold: 0.1, // Trigger when 10% visible
+      threshold: 0.1,
       root: containerRef.current 
     });
 
@@ -27,8 +28,6 @@ export default function DocumentPage({ onBack }) {
     const element = document.getElementById(id);
     const container = containerRef.current;
     if (element && container) {
-      // offsetTop gives distance from the closest positioned ancestor. 
-      // Since container is the scrolling area, this works perfectly.
       const topPos = element.offsetTop - 100; 
       container.scrollTo({
         top: topPos,
@@ -37,90 +36,14 @@ export default function DocumentPage({ onBack }) {
     }
   };
 
-  const navItemStyle = {
-    color: '#86868b',
-    fontSize: '0.85rem',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'color 0.2s',
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px',
-    padding: '4px 8px'
-  };
+  const navItemClass = "text-[#86868b] text-sm font-semibold cursor-pointer transition-colors uppercase tracking-wide px-2 py-1 hover:text-[#f5f5f7]";
 
   return (
-    <div ref={containerRef} style={{
-      width: '100vw',
-      height: '100vh',
-      background: '#000000', 
-      color: '#f5f5f7',
-      overflowY: 'auto',
-      fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', sans-serif",
-      animation: 'fadeInDoc 0.5s ease-out',
-      position: 'relative'
-    }}>
+    <div ref={containerRef} className="w-full h-screen bg-black text-[#f5f5f7] overflow-y-auto font-sans relative animate-[fadeInDoc_0.5s_ease-out]">
       <style>{`
         @keyframes fadeInDoc {
           from { opacity: 0; }
           to { opacity: 1; }
-        }
-        
-        /* Scroll Reveal Initial State */
-        .doc-section { 
-          opacity: 0; 
-          transform: translateY(60px); 
-          transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        /* Scroll Reveal Visible State */
-        .doc-section.visible { 
-          opacity: 1; 
-          transform: translateY(0); 
-        }
-        
-        .bento-card {
-          background: #1d1d1f;
-          border-radius: 24px;
-          padding: 2rem;
-          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s;
-          border: 1px solid rgba(255,255,255,0.02);
-        }
-        .bento-card:hover {
-          transform: scale(1.01);
-          background: #252527;
-        }
-        .bento-grid-2 {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
-        }
-        .bento-grid-3 {
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
-          gap: 1.5rem;
-        }
-        
-        /* Glass Header */
-        .glass-header {
-          position: sticky; 
-          top: 0; 
-          z-index: 50;
-          background: rgba(0, 0, 0, 0.7);
-          backdrop-filter: saturate(180%) blur(20px);
-          -webkit-backdrop-filter: saturate(180%) blur(20px);
-          border-bottom: 1px solid rgba(255,255,255,0.08);
-          padding: 1rem 3rem;
-          display: flex; 
-          justify-content: space-between; 
-          align-items: center;
-        }
-
-        .nav-link:hover {
-          color: #f5f5f7 !important;
-        }
-        
-        h1, h2, h3, h4, h5 {
-          letter-spacing: -0.02em;
         }
         
         /* Scrollbar */
@@ -131,125 +54,113 @@ export default function DocumentPage({ onBack }) {
       `}</style>
 
       {/* Top Navigation Bar */}
-      <div className="glass-header">
-        <button onClick={onBack} style={{
-          background: 'rgba(255,255,255,0.1)', border: 'none',
-          borderRadius: '20px', padding: '8px 16px', color: '#f5f5f7',
-          cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px',
-          fontSize: '0.9rem', fontWeight: '500', transition: 'background 0.2s'
-        }}
-        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
-        onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
-        >
+      <div className="sticky top-0 z-50 bg-black/70 backdrop-blur-xl border-b border-white/10 px-4 md:px-12 py-4 flex flex-col md:flex-row md:justify-between items-center gap-4">
+        <button onClick={onBack} className="bg-white/10 hover:bg-white/20 border-none rounded-full px-4 py-2 text-[#f5f5f7] cursor-pointer flex items-center gap-2 text-sm font-medium transition-colors w-full md:w-auto justify-center md:justify-start">
           <ChevronLeft size={18} /> กลับสู่ Demo
         </button>
 
         {/* Landing Page Navigation Links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <span className="nav-link" style={navItemStyle} onClick={() => scrollTo('sec-summary')}>Summary</span>
-          <span className="nav-link" style={navItemStyle} onClick={() => scrollTo('sec-problem')}>Problem</span>
-          <span className="nav-link" style={navItemStyle} onClick={() => scrollTo('sec-arch')}>Architecture</span>
-          <span className="nav-link" style={navItemStyle} onClick={() => scrollTo('sec-compliance')}>Compliance</span>
-          <span className="nav-link" style={navItemStyle} onClick={() => scrollTo('sec-moat')}>Moat</span>
-          <span className="nav-link" style={navItemStyle} onClick={() => scrollTo('sec-business')}>Business</span>
+        <div className="flex items-center gap-2 md:gap-4 flex-wrap justify-center">
+          <span className={navItemClass} onClick={() => scrollTo('sec-summary')}>Summary</span>
+          <span className={navItemClass} onClick={() => scrollTo('sec-problem')}>Problem</span>
+          <span className={navItemClass} onClick={() => scrollTo('sec-arch')}>Architecture</span>
+          <span className={navItemClass} onClick={() => scrollTo('sec-compliance')}>Compliance</span>
+          <span className={navItemClass} onClick={() => scrollTo('sec-moat')}>Moat</span>
+          <span className={navItemClass} onClick={() => scrollTo('sec-business')}>Business</span>
         </div>
       </div>
 
       {/* Content */}
-      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '5rem 2rem 8rem 2rem' }}>
+      <div className="max-w-5xl mx-auto px-4 md:px-8 pt-12 pb-32">
 
         {/* Hero Header */}
-        <div className="doc-section" style={{ textAlign: 'center', marginBottom: '6rem' }}>
-          <h1 style={{
-            fontSize: '4.5rem', fontWeight: '800', lineHeight: 1.1, marginBottom: '1rem',
-            background: 'linear-gradient(180deg, #ffffff 0%, #86868b 100%)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'
-          }}>
+        <div className="doc-section opacity-0 translate-y-12 transition-all duration-1000 text-center mb-16 md:mb-24">
+          <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-4 bg-gradient-to-b from-white to-[#86868b] text-transparent bg-clip-text">
             VoiceGuard
           </h1>
-          <p style={{ fontSize: '1.5rem', color: '#86868b', maxWidth: '700px', margin: '0 auto', lineHeight: 1.4, fontWeight: '500' }}>
+          <p className="text-lg md:text-2xl text-[#86868b] max-w-2xl mx-auto leading-relaxed font-medium">
             AI Assistant ระหว่างการโทร<br/>ปกป้องผู้สูงอายุจากการหลอกลวงแบบ Real-time
           </p>
         </div>
 
         {/* Section 1: Executive Summary */}
-        <div id="sec-summary" className="doc-section" style={{ marginBottom: '4rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
-            <FileText size={28} color="#0071e3" />
-            <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>1. บทสรุปผู้บริหาร</h2>
+        <div id="sec-summary" className="doc-section opacity-0 translate-y-12 transition-all duration-1000 mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <FileText size={28} className="text-[#0071e3]" />
+            <h2 className="text-2xl md:text-3xl font-bold">1. บทสรุปผู้บริหาร</h2>
           </div>
-          <div className="bento-card">
-            <p style={{ color: '#86868b', lineHeight: 1.7, fontSize: '1.1rem' }}>
-              <strong style={{ color: '#f5f5f7' }}>VoiceGuard</strong> คือระบบป้องกันภัยคุกคามทางโทรศัพท์แบบ <strong style={{ color: '#0071e3' }}>Active Intervention</strong> (แทรกแซงแบบเรียลไทม์) ออกแบบมาเพื่อแก้ปัญหาแก๊งคอลเซ็นเตอร์หลอกลวงผู้สูงอายุ โดยใช้ <strong style={{ color: '#0071e3' }}>"Adaptive Risk Engine"</strong> วิเคราะห์บริบทและเนื้อหาการสนทนา หากพบความเสี่ยงสูง ระบบจะแจ้งเตือนอย่างรุนแรงและตัดสายอัตโนมัติ (Opt-in)
+          <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5">
+            <p className="text-[#86868b] leading-relaxed text-base md:text-lg">
+              <strong className="text-[#f5f5f7]">VoiceGuard</strong> คือระบบป้องกันภัยคุกคามทางโทรศัพท์แบบ <strong className="text-[#0071e3]">Active Intervention</strong> (แทรกแซงแบบเรียลไทม์) ออกแบบมาเพื่อแก้ปัญหาแก๊งคอลเซ็นเตอร์หลอกลวงผู้สูงอายุ โดยใช้ <strong className="text-[#0071e3]">"Adaptive Risk Engine"</strong> วิเคราะห์บริบทและเนื้อหาการสนทนา หากพบความเสี่ยงสูง ระบบจะแจ้งเตือนอย่างรุนแรงและตัดสายอัตโนมัติ (Opt-in)
             </p>
           </div>
         </div>
 
         {/* Section 2: Problem & Why Now */}
-        <div id="sec-problem" className="doc-section" style={{ marginBottom: '4rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
-            <Zap size={28} color="#ff9f0a" />
-            <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>2. ปัญหาและโอกาส</h2>
+        <div id="sec-problem" className="doc-section opacity-0 translate-y-12 transition-all duration-1000 mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <Zap size={28} className="text-[#ff9f0a]" />
+            <h2 className="text-2xl md:text-3xl font-bold">2. ปัญหาและโอกาส</h2>
           </div>
-          <div className="bento-grid-3">
-            <div className="bento-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <h4 style={{ color: '#f5f5f7', fontSize: '1.2rem', marginBottom: '0.5rem' }}>The 40B Baht Pain</h4>
-              <p style={{ color: '#86868b', lineHeight: 1.6, fontSize: '0.95rem' }}>
-                ความเสียหายจากคดีหลอกลวงออนไลน์สูงถึง <strong style={{ color: '#ff3b30' }}>4 หมื่นล้านบาท</strong> โดยผู้สูงอายุเป็นกลุ่มที่สูญเสียเงินต่อหัวสูงสุด
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5 flex flex-col justify-center">
+              <h4 className="text-[#f5f5f7] text-lg font-semibold mb-2">The 40B Baht Pain</h4>
+              <p className="text-[#86868b] leading-relaxed text-sm md:text-base">
+                ความเสียหายจากคดีหลอกลวงออนไลน์สูงถึง <strong className="text-[#ff3b30]">4 หมื่นล้านบาท</strong> โดยผู้สูงอายุเป็นกลุ่มที่สูญเสียเงินต่อหัวสูงสุด
               </p>
             </div>
-            <div className="bento-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <h4 style={{ color: '#f5f5f7', fontSize: '1.2rem', marginBottom: '0.5rem' }}>Gen AI Era</h4>
-              <p style={{ color: '#86868b', lineHeight: 1.6, fontSize: '0.95rem' }}>
-                สแกมเมอร์เริ่มใช้ <strong style={{ color: '#f5f5f7' }}>AI Voice Clone</strong> และสคริปต์อัตโนมัติ ทำให้การหลอกลวงแนบเนียนขึ้นจนแยกไม่ออก
+            <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5 flex flex-col justify-center">
+              <h4 className="text-[#f5f5f7] text-lg font-semibold mb-2">Gen AI Era</h4>
+              <p className="text-[#86868b] leading-relaxed text-sm md:text-base">
+                สแกมเมอร์เริ่มใช้ <strong className="text-[#f5f5f7]">AI Voice Clone</strong> และสคริปต์อัตโนมัติ ทำให้การหลอกลวงแนบเนียนขึ้นจนแยกไม่ออก
               </p>
             </div>
-            <div className="bento-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <h4 style={{ color: '#f5f5f7', fontSize: '1.2rem', marginBottom: '0.5rem' }}>Status Quo Failure</h4>
-              <p style={{ color: '#86868b', lineHeight: 1.6, fontSize: '0.95rem' }}>
-                แอปบล็อกเบอร์แบบเดิม (Blacklist) ตามเบอร์ VoIP ไม่ทัน เราจึงต้องเปลี่ยนมาป้องกันที่ <strong style={{ color: '#f5f5f7' }}>"เนื้อหา"</strong>
+            <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5 flex flex-col justify-center">
+              <h4 className="text-[#f5f5f7] text-lg font-semibold mb-2">Status Quo Failure</h4>
+              <p className="text-[#86868b] leading-relaxed text-sm md:text-base">
+                แอปบล็อกเบอร์แบบเดิม (Blacklist) ตามเบอร์ VoIP ไม่ทัน เราจึงต้องเปลี่ยนมาป้องกันที่ <strong className="text-[#f5f5f7]">"เนื้อหา"</strong>
               </p>
             </div>
           </div>
         </div>
 
         {/* Section 3: Technical Architecture */}
-        <div id="sec-arch" className="doc-section" style={{ marginBottom: '4rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
-            <Cpu size={28} color="#0071e3" />
-            <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>3. สถาปัตยกรรมระบบ</h2>
+        <div id="sec-arch" className="doc-section opacity-0 translate-y-12 transition-all duration-1000 mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <Cpu size={28} className="text-[#0071e3]" />
+            <h2 className="text-2xl md:text-3xl font-bold">3. สถาปัตยกรรมระบบ</h2>
           </div>
 
-          <div className="bento-card" style={{ marginBottom: '1.5rem' }}>
-            <h4 style={{ color: '#f5f5f7', marginBottom: '1rem', fontSize: '1.3rem' }}>Data Extraction Pipeline</h4>
-            <div className="bento-grid-2">
+          <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5 mb-6">
+            <h4 className="text-[#f5f5f7] text-xl font-semibold mb-4">Data Extraction Pipeline</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h5 style={{ color: '#0071e3', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Method 1: Accessibility</h5>
-                <p style={{ color: '#86868b', fontSize: '1rem', lineHeight: 1.6 }}>
+                <h5 className="text-[#0071e3] font-semibold text-lg mb-2">Method 1: Accessibility</h5>
+                <p className="text-[#86868b] text-sm md:text-base leading-relaxed">
                   เจาะจงใช้ Accessibility Service ดึง Text จาก "Samsung Call Captions" (รองรับไทย 100% ไม่ต้องดักฟัง Audio Stream เอง)
                 </p>
               </div>
               <div>
-                <h5 style={{ color: '#0071e3', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Method 2: Protected Speaker</h5>
-                <p style={{ color: '#86868b', fontSize: '1rem', lineHeight: 1.6 }}>
+                <h5 className="text-[#0071e3] font-semibold text-lg mb-2">Method 2: Protected Speaker</h5>
+                <p className="text-[#86868b] text-sm md:text-base leading-relaxed">
                   เปิดลำโพงอัตโนมัติเมื่อรับสายแปลกหน้า และใช้ไมโครโฟนส่งเสียงเข้า On-device Thai STT ขนาดเล็ก
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bento-card">
-            <h4 style={{ color: '#f5f5f7', marginBottom: '1rem', fontSize: '1.3rem' }}>The Intervention (การแทรกแซง)</h4>
-            <div className="bento-grid-2">
-              <div style={{ background: '#2d2216', padding: '1.5rem', borderRadius: '16px' }}>
-                <h5 style={{ color: '#ff9f0a', marginBottom: '0.5rem', fontSize: '1.1rem' }}>⚠️ Medium Risk (40-85%)</h5>
-                <p style={{ color: '#86868b', fontSize: '1rem', lineHeight: 1.6 }}>
+          <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5">
+            <h4 className="text-[#f5f5f7] text-xl font-semibold mb-4">The Intervention (การแทรกแซง)</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-[#2d2216] p-6 rounded-2xl">
+                <h5 className="text-[#ff9f0a] font-semibold text-lg mb-2">⚠️ Medium Risk (40-85%)</h5>
+                <p className="text-[#86868b] text-sm md:text-base leading-relaxed">
                   Intrusive Warning: หน้าจอกะพริบ บล็อกเสียงสนทนาชั่วคราว ดึงสติผู้สูงอายุ
                 </p>
               </div>
-              <div style={{ background: '#321414', padding: '1.5rem', borderRadius: '16px' }}>
-                <h5 style={{ color: '#ff3b30', marginBottom: '0.5rem', fontSize: '1.1rem' }}>🚨 High Risk (&gt;85%)</h5>
-                <p style={{ color: '#86868b', fontSize: '1rem', lineHeight: 1.6 }}>
+              <div className="bg-[#321414] p-6 rounded-2xl">
+                <h5 className="text-[#ff3b30] font-semibold text-lg mb-2">🚨 High Risk (&gt;85%)</h5>
+                <p className="text-[#86868b] text-sm md:text-base leading-relaxed">
                   Auto-Terminate: ตัดสายทิ้งทันที (ถ้าลูกหลานเปิด Opt-in) พร้อมส่ง SOS หาครอบครัว
                 </p>
               </div>
@@ -258,106 +169,106 @@ export default function DocumentPage({ onBack }) {
         </div>
 
         {/* Section 4: Defense Strategy */}
-        <div id="sec-compliance" className="doc-section" style={{ marginBottom: '4rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
-            <Scale size={28} color="#ff375f" />
-            <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>4. กฎหมาย PDPA และความเป็นส่วนตัว (Compliance)</h2>
+        <div id="sec-compliance" className="doc-section opacity-0 translate-y-12 transition-all duration-1000 mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <Scale size={28} className="text-[#ff375f]" />
+            <h2 className="text-2xl md:text-3xl font-bold">4. กฎหมาย PDPA และความเป็นส่วนตัว</h2>
           </div>
           
-          <div className="bento-card" style={{ borderLeft: '4px solid #ff375f', marginBottom: '1.5rem' }}>
-            <h4 style={{ color: '#f5f5f7', marginBottom: '1.5rem', fontSize: '1.3rem' }}>3-Layer PDPA Defense Strategy</h4>
-            <div className="bento-grid-3">
+          <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5 border-l-4 border-l-[#ff375f] mb-6">
+            <h4 className="text-[#f5f5f7] text-xl font-semibold mb-6">3-Layer PDPA Defense Strategy</h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <h5 style={{ color: '#ff375f', fontSize: '1.1rem', marginBottom: '0.75rem' }}>1. Explicit Consent</h5>
-                <p style={{ color: '#86868b', fontSize: '0.95rem', lineHeight: 1.6 }}>
-                  ผู้ใช้งานหรือลูกหลานกดยอมรับเงื่อนไข <strong style={{ color: '#f5f5f7' }}>(Opt-in)</strong> อย่างชัดเจนตอนติดตั้งแอป เพื่ออนุญาตให้ AI ประมวลผลเสียงปกป้องตนเอง
+                <h5 className="text-[#ff375f] font-semibold text-lg mb-3">1. Explicit Consent</h5>
+                <p className="text-[#86868b] text-sm md:text-base leading-relaxed">
+                  ผู้ใช้งานหรือลูกหลานกดยอมรับเงื่อนไข <strong className="text-[#f5f5f7]">(Opt-in)</strong> อย่างชัดเจนตอนติดตั้งแอป เพื่ออนุญาตให้ AI ประมวลผลเสียงปกป้องตนเอง
                 </p>
               </div>
               <div>
-                <h5 style={{ color: '#ff375f', fontSize: '1.1rem', marginBottom: '0.75rem' }}>2. Implied Consent</h5>
-                <p style={{ color: '#86868b', fontSize: '0.95rem', lineHeight: 1.6 }}>
-                  ระบบมี <strong style={{ color: '#f5f5f7' }}>Automated Voice Warning</strong> แจ้งเตือนคู่สายทันทีว่า "สายนี้ถูกคุ้มครองโดย AI" หากคู่สายพูดต่อ ถือเป็นการยินยอมโดยปริยาย
+                <h5 className="text-[#ff375f] font-semibold text-lg mb-3">2. Implied Consent</h5>
+                <p className="text-[#86868b] text-sm md:text-base leading-relaxed">
+                  ระบบมี <strong className="text-[#f5f5f7]">Automated Voice Warning</strong> แจ้งเตือนคู่สายทันทีว่า "สายนี้ถูกคุ้มครองโดย AI" หากคู่สายพูดต่อ ถือเป็นการยินยอมโดยปริยาย
                 </p>
               </div>
               <div>
-                <h5 style={{ color: '#ff375f', fontSize: '1.1rem', marginBottom: '0.75rem' }}>3. Legitimate Interest</h5>
-                <p style={{ color: '#86868b', fontSize: '0.95rem', lineHeight: 1.6 }}>
-                  อ้างอิงฐาน <strong style={{ color: '#f5f5f7' }}>ประโยชน์อันชอบธรรม</strong> (Fraud Prevention) เพื่อป้องกันอาชญากรรม ซึ่งมีน้ำหนักทางกฎหมายเหนือกว่าสิทธิของมิจฉาชีพ
+                <h5 className="text-[#ff375f] font-semibold text-lg mb-3">3. Legitimate Interest</h5>
+                <p className="text-[#86868b] text-sm md:text-base leading-relaxed">
+                  อ้างอิงฐาน <strong className="text-[#f5f5f7]">ประโยชน์อันชอบธรรม</strong> (Fraud Prevention) เพื่อป้องกันอาชญากรรม ซึ่งมีน้ำหนักทางกฎหมายเหนือกว่าสิทธิของมิจฉาชีพ
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bento-grid-2">
-            <div className="bento-card">
-              <h4 style={{ color: '#f5f5f7', fontSize: '1.1rem', marginBottom: '0.75rem' }}>Zero Data Breach (On-Device)</h4>
-              <p style={{ color: '#86868b', fontSize: '0.95rem', lineHeight: 1.6 }}>
-                ทำงานแบบ Local บนชิปมือถือ 100% <strong style={{ color: '#f5f5f7' }}>ไม่มีการส่งไฟล์เสียงหรือข้อความขึ้น Cloud</strong> จึงปิดประตูความเสี่ยงเรื่องข้อมูลรั่วไหลได้อย่างเด็ดขาด
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5">
+              <h4 className="text-[#f5f5f7] font-semibold text-lg mb-3">Zero Data Breach (On-Device)</h4>
+              <p className="text-[#86868b] text-sm md:text-base leading-relaxed">
+                ทำงานแบบ Local บนชิปมือถือ 100% <strong className="text-[#f5f5f7]">ไม่มีการส่งไฟล์เสียงหรือข้อความขึ้น Cloud</strong> จึงปิดประตูความเสี่ยงเรื่องข้อมูลรั่วไหลได้อย่างเด็ดขาด
               </p>
             </div>
-            <div className="bento-card">
-              <h4 style={{ color: '#f5f5f7', fontSize: '1.1rem', marginBottom: '0.75rem' }}>Transient Processing</h4>
-              <p style={{ color: '#86868b', fontSize: '0.95rem', lineHeight: 1.6 }}>
-                แปลงเสียงเป็น Text และประมวลผลลบจาก RAM ทันที <strong style={{ color: '#f5f5f7' }}>ไม่มีการบันทึกไฟล์เสียง (No Audio Logging)</strong> รอดพ้นข้อหาดักฟัง (Wiretapping)
+            <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5">
+              <h4 className="text-[#f5f5f7] font-semibold text-lg mb-3">Transient Processing</h4>
+              <p className="text-[#86868b] text-sm md:text-base leading-relaxed">
+                แปลงเสียงเป็น Text และประมวลผลลบจาก RAM ทันที <strong className="text-[#f5f5f7]">ไม่มีการบันทึกไฟล์เสียง (No Audio Logging)</strong> รอดพ้นข้อหาดักฟัง (Wiretapping)
               </p>
             </div>
           </div>
         </div>
 
         {/* Section 5: Competitive Advantage */}
-        <div id="sec-moat" className="doc-section" style={{ marginBottom: '4rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
-            <Trophy size={28} color="#bf5af2" />
-            <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>5. ความได้เปรียบ (Moat)</h2>
+        <div id="sec-moat" className="doc-section opacity-0 translate-y-12 transition-all duration-1000 mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <Trophy size={28} className="text-[#bf5af2]" />
+            <h2 className="text-2xl md:text-3xl font-bold">5. ความได้เปรียบ (Moat)</h2>
           </div>
-          <div className="bento-grid-2">
-            <div className="bento-card">
-              <h4 style={{ color: '#f5f5f7', fontSize: '1.2rem', marginBottom: '0.75rem' }}>เหนือกว่า Truecaller</h4>
-              <p style={{ color: '#86868b', fontSize: '1rem', lineHeight: 1.6 }}>
-                เป็น <strong style={{ color: '#bf5af2' }}>Proactive (จับเนื้อหา)</strong> ไม่ใช่ Reactive (รอมนุษย์ Report เบอร์)
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5">
+              <h4 className="text-[#f5f5f7] font-semibold text-xl mb-3">เหนือกว่า Truecaller</h4>
+              <p className="text-[#86868b] text-base md:text-lg leading-relaxed">
+                เป็น <strong className="text-[#bf5af2]">Proactive (จับเนื้อหา)</strong> ไม่ใช่ Reactive (รอมนุษย์ Report เบอร์)
               </p>
             </div>
-            <div className="bento-card">
-              <h4 style={{ color: '#f5f5f7', fontSize: '1.2rem', marginBottom: '0.75rem' }}>เหนือกว่า Google Call Screen</h4>
-              <p style={{ color: '#86868b', fontSize: '1rem', lineHeight: 1.6 }}>
-                เราปกป้อง <strong style={{ color: '#bf5af2' }}>"ระหว่างคุย" (During Call)</strong> ไม่ใช่แค่กรองก่อนรับสาย
+            <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5">
+              <h4 className="text-[#f5f5f7] font-semibold text-xl mb-3">เหนือกว่า Google Call Screen</h4>
+              <p className="text-[#86868b] text-base md:text-lg leading-relaxed">
+                เราปกป้อง <strong className="text-[#bf5af2]">"ระหว่างคุย" (During Call)</strong> ไม่ใช่แค่กรองก่อนรับสาย
               </p>
             </div>
           </div>
         </div>
 
         {/* Section 6: Business Model */}
-        <div id="sec-business" className="doc-section" style={{ marginBottom: '2rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
-            <Briefcase size={28} color="#30d158" />
-            <h2 style={{ fontSize: '2rem', fontWeight: '700' }}>6. โมเดลธุรกิจ (Business Model)</h2>
+        <div id="sec-business" className="doc-section opacity-0 translate-y-12 transition-all duration-1000 mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <Briefcase size={28} className="text-[#30d158]" />
+            <h2 className="text-2xl md:text-3xl font-bold">6. โมเดลธุรกิจ (Business Model)</h2>
           </div>
 
-          <div className="bento-card" style={{ marginBottom: '1.5rem' }}>
-            <h4 style={{ color: '#f5f5f7', marginBottom: '1rem', fontSize: '1.3rem' }}>B2B2C: The InsurTech Play</h4>
-            <p style={{ color: '#86868b', fontSize: '1.05rem', lineHeight: 1.7, marginBottom: '1.5rem' }}>
+          <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5">
+            <h4 className="text-[#f5f5f7] font-semibold text-xl mb-4">B2B2C: The InsurTech Play</h4>
+            <p className="text-[#86868b] text-base md:text-lg leading-relaxed mb-6">
               เราไม่เก็บเงินผู้สูงอายุ (Free for Vulnerable) แต่ทำรายได้ผ่านโมเดล B2B ร่วมกับพันธมิตรองค์กร:
             </p>
             
-            <div className="bento-grid-3">
-              <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1.25rem', borderRadius: '16px' }}>
-                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🏦</div>
-                <h5 style={{ color: '#f5f5f7', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Banking Partners</h5>
-                <p style={{ color: '#86868b', fontSize: '0.9rem', lineHeight: 1.6 }}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white/5 p-5 rounded-2xl">
+                <div className="text-3xl mb-3">🏦</div>
+                <h5 className="text-[#f5f5f7] font-semibold text-lg mb-2">Banking Partners</h5>
+                <p className="text-[#86868b] text-sm leading-relaxed">
                   ขาย License ให้แอปธนาคารนำไปฝัง เพื่อลดภาระความรับผิดชอบ (Liability) กรณีลูกค้าโดนหลอกโอนเงิน
                 </p>
               </div>
-              <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1.25rem', borderRadius: '16px' }}>
-                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🛡️</div>
-                <h5 style={{ color: '#f5f5f7', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Cyber Insurance</h5>
-                <p style={{ color: '#86868b', fontSize: '0.9rem', lineHeight: 1.6 }}>
+              <div className="bg-white/5 p-5 rounded-2xl">
+                <div className="text-3xl mb-3">🛡️</div>
+                <h5 className="text-[#f5f5f7] font-semibold text-lg mb-2">Cyber Insurance</h5>
+                <p className="text-[#86868b] text-sm leading-relaxed">
                   จับมือบริษัทประกันออก "ประกันไซเบอร์" หากผู้สูงอายุติดตั้ง VoiceGuard จะได้ส่วนลดเบี้ยประกัน (Risk Mitigation)
                 </p>
               </div>
-              <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1.25rem', borderRadius: '16px' }}>
-                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📶</div>
-                <h5 style={{ color: '#f5f5f7', marginBottom: '0.5rem', fontSize: '1.1rem' }}>Telco Bundles</h5>
-                <p style={{ color: '#86868b', fontSize: '0.9rem', lineHeight: 1.6 }}>
+              <div className="bg-white/5 p-5 rounded-2xl">
+                <div className="text-3xl mb-3">📶</div>
+                <h5 className="text-[#f5f5f7] font-semibold text-lg mb-2">Telco Bundles</h5>
+                <p className="text-[#86868b] text-sm leading-relaxed">
                   ผูกแพ็กเกจ Family Plan ของค่ายมือถือ เช่น "AIS Family Shield" ได้รับสิทธิ์ใช้งานระบบระดับ Premium
                 </p>
               </div>
