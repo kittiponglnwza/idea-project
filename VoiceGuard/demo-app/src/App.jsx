@@ -165,53 +165,43 @@ function App() {
         )}
       </div>
 
-      {/* Pitch Explainer Modal (Only appears in State 6 to pause for Judges) */}
+      {/* Pitch Explainer Modal (Sleek minimalist pill) */}
       {demoState === 6 && (
-        <div style={{
-          position: 'fixed',
-          bottom: '24px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 9999,
-          background: 'rgba(20, 20, 20, 0.95)',
-          backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255,255,255,0.2)',
-          borderRadius: '24px',
-          padding: '20px 24px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '12px',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
-          width: '90%',
-          maxWidth: '400px',
-          animation: 'smoothFadeIn 0.5s ease-out forwards'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#ff3b30' }}>
-            <span style={{ fontSize: '1.2rem' }}>⏸️</span>
-            <span style={{ fontWeight: '700', letterSpacing: '1px' }}>DEMO PAUSED FOR EXPLANATION</span>
-          </div>
-          <p style={{ color: '#e5e5ea', fontSize: '0.9rem', textAlign: 'center', lineHeight: 1.5, margin: 0 }}>
-            ระบบตรวจพบมิจฉาชีพและแสดงคำเตือน (หน้าจอแดง) <br/>
-            คุณสามารถอธิบายการทำงานให้กรรมการฟังได้ตรงนี้
-          </p>
-          <button 
-            onClick={() => setDemoState(7)}
-            style={{
-              width: '100%',
-              padding: '12px',
-              borderRadius: '12px',
-              background: '#0071e3',
-              color: 'white',
-              border: 'none',
-              fontWeight: '600',
-              fontSize: '1rem',
-              cursor: 'pointer',
-              marginTop: '8px',
-              boxShadow: '0 4px 12px rgba(0, 113, 227, 0.3)'
-            }}>
-            คลิกเพื่อจำลองการตัดสายอัตโนมัติ (หรือกด Space)
-          </button>
+        <div 
+          onClick={() => setDemoState(7)}
+          style={{
+            position: 'fixed',
+            bottom: '40px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 9999,
+            background: 'rgba(0, 0, 0, 0.6)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255,255,255,0.15)',
+            borderRadius: '100px',
+            padding: '12px 24px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+            animation: 'smoothFadeIn 0.5s ease-out forwards',
+            cursor: 'pointer',
+            transition: 'background 0.2s, transform 0.2s'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+            e.currentTarget.style.transform = 'translateX(-50%) scale(1.05)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(0, 0, 0, 0.6)';
+            e.currentTarget.style.transform = 'translateX(-50%) scale(1)';
+          }}
+        >
+          <span style={{ fontSize: '1.2rem', color: '#ff9f0a' }}>⏸️</span>
+          <span style={{ color: '#f5f5f7', fontWeight: '500', fontSize: '0.95rem', letterSpacing: '0.5px' }}>
+            Demo Paused — Press Space to Auto-Terminate
+          </span>
         </div>
       )}
     </div>
