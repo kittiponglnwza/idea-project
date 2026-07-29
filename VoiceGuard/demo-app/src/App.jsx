@@ -126,7 +126,7 @@ function App() {
       </div>
 
       {/* Column 3: Family Monitoring Dashboard (Floating Widget) */}
-      <div className="widget-right" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div className="widget-right" style={{ flexDirection: 'column', gap: '24px' }}>
         {demoState >= 7 && (
           <FamilyDashboard 
             demoState={demoState} 
