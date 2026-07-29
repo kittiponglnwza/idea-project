@@ -323,54 +323,45 @@ input:checked + .slider:before { transform: translateX(20px); }
 
 @media (max-width: 900px) {
   body {
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
   }
 
   .god-mode-layout {
     flex-direction: column;
-    height: auto;
-    min-height: 100vh;
-    padding: 40px 20px;
-    gap: 40px;
-    overflow: visible;
+    height: 100vh;
+    padding: 0;
+    gap: 0;
+    overflow: hidden;
     justify-content: flex-start;
   }
   
+  /* Hide backend widgets on mobile to create a pure native app illusion */
   .widget-left, .widget-right {
-    position: relative;
-    left: 0; right: 0;
-    top: 0;
-    transform: none;
-    width: 100%;
-    max-width: 400px;
-    animation: smoothFadeIn 0.5s ease-out forwards;
+    display: none;
   }
   
   .phone-container {
-    width: 100%;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     justify-content: center;
-    zoom: 1; /* reset zoom if it was set */
-    order: -1; /* Make phone appear at the top on mobile */
+    zoom: 1; 
+    order: -1; 
   }
   
+  /* Remove fake phone bezel, make it fill the real screen */
   .phone-bezel {
-    transform-origin: top center;
-    transform: scale(0.9);
-    margin-bottom: -80px;
-  }
-}
-
-@media (max-width: 480px) {
-  .god-mode-layout {
-    padding: 20px 10px;
-    gap: 20px;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+    transform: none !important;
+    background: #000000;
   }
 
-  .phone-bezel {
-    transform-origin: top center;
-    transform: scale(min(0.85, calc(100vw / 400)));
-    margin-bottom: -15%;
+  /* Hide fake iOS elements on a real phone */
+  .dynamic-island, .status-bar, .gesture-bar {
+    display: none;
   }
 }
