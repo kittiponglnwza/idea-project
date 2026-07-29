@@ -2,9 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import { evaluateRisk } from '../utils/aiEngine';
 
 const SCAM_SCRIPT = [
-  "สวัสดีครับ", "ผมเป็นตำรวจ", "จาก", "สภ.เมือง", 
-  "ตอนนี้", "มีการแอบอ้าง", "ชื่อคุณ", "ไป", "ฟอกเงิน", 
-  "รบกวน", "ให้คุณ", "โอนเงิน", "ทั้งหมด", "มาเพื่อ", "ตรวจสอบ", "ด่วนครับ", 
+  "สวัสดีครับ", "เรียนสาย", "คุณพ่อ", "ใช่ไหมครับ",
+  "ผม", "ร้อยตำรวจเอก", "สมชาย", "นะ", "ครับ", 
+  "ติดต่อ", "จาก", "สภ.เมือง", 
+  "พอดีว่า", "ตอนนี้", "ทางเรา", "พบสมุดบัญชี", "ของคุณพ่อ", 
+  "ตกอยู่ใน", "ที่เกิดเหตุ", "จับกุม", "ยาเสพติด", "ครับ",
+  "และ", "มีการแอบอ้าง", "ชื่อ", "ของคุณพ่อ", "ไปทำคดี", "ฟอกเงิน", 
+  "มูลค่า", "หลายสิบล้านบาท", 
+  "เพื่อ", "ความบริสุทธิ์ใจ", "รบกวน", "ให้คุณพ่อ", "โอนเงิน", "ในบัญชี", "ทั้งหมด", 
+  "มาเพื่อ", "ตรวจสอบ", "ด่วนครับ", 
   "และ", "ห้ามบอกใคร", "เด็ดขาดนะ"
 ];
 
@@ -26,18 +32,18 @@ export function useRealTimeAI(isLiveMode, onRiskExceeded) {
       return;
     }
 
-    // 1. Play PDPA Warning (System Voice)
-    const systemUtterance = new SpeechSynthesisUtterance("สายนี้อยู่ภายใต้การคุ้มครองของ เอไอ เพื่อความปลอดภัย");
+    // 1. Play PDPA Warning (System Voice - High Pitch, Robotic)
+    const systemUtterance = new SpeechSynthesisUtterance("ระบบกำลังบันทึกเสียงและวิเคราะห์สายนี้ เพื่อความปลอดภัยของคุณ");
     systemUtterance.lang = 'th-TH';
-    systemUtterance.rate = 1.0;
-    systemUtterance.pitch = 1.2; // Slightly higher pitch for system voice
+    systemUtterance.rate = 1.2;
+    systemUtterance.pitch = 1.7; // Very high pitch to sound like a digital assistant
     
-    // 2. Play Scammer Voice
+    // 2. Play Scammer Voice (Deep, slow, threatening)
     const fullText = SCAM_SCRIPT.join(" ");
     const scammerUtterance = new SpeechSynthesisUtterance(fullText);
     scammerUtterance.lang = 'th-TH';
-    scammerUtterance.rate = 0.85; // Slower, deeper
-    scammerUtterance.pitch = 0.8;
+    scammerUtterance.rate = 0.8; // Slower
+    scammerUtterance.pitch = 0.4; // Very deep voice
 
     window.speechSynthesis.speak(systemUtterance);
     window.speechSynthesis.speak(scammerUtterance);

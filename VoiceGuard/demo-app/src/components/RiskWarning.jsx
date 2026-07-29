@@ -69,7 +69,7 @@ export default function RiskWarning({ show, onHangup, isOptIn }) {
           >
             <p style={{ color: 'white', fontWeight: '500', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
               <span style={{ display: 'inline-block', animation: 'edgePulse 1.5s infinite ease-in-out' }}>⏸️</span> 
-              Auto-terminating... (Tap to Skip)
+              Auto-terminating...
             </p>
           </div>
         </div>
