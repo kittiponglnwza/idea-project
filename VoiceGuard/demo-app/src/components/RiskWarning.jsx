@@ -47,10 +47,29 @@ export default function RiskWarning({ show, onHangup, isOptIn }) {
       )}
       
       {isOptIn && (
-        <div style={{ marginTop: '48px', textAlign: 'center', animation: 'smoothFadeIn 0.5s ease-out 0.2s both' }}>
-          <div style={{ background: 'rgba(0,0,0,0.5)', padding: '12px 24px', borderRadius: '100px', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <p style={{ color: 'white', fontWeight: '500', fontSize: '1rem' }}>
-              Auto-terminating call...
+        <div 
+          onClick={onHangup}
+          style={{ 
+            marginTop: '48px', 
+            textAlign: 'center', 
+            animation: 'smoothFadeIn 0.5s ease-out 0.2s both',
+            cursor: 'pointer'
+          }}>
+          <div style={{ 
+            background: 'rgba(0,0,0,0.5)', 
+            padding: '12px 24px', 
+            borderRadius: '100px', 
+            border: '1px solid rgba(255,255,255,0.2)',
+            display: 'inline-block',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            transition: 'background 0.2s'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.7)'}
+          onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
+          >
+            <p style={{ color: 'white', fontWeight: '500', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+              <span style={{ display: 'inline-block', animation: 'edgePulse 1.5s infinite ease-in-out' }}>⏸️</span> 
+              Auto-terminating... (Tap to Skip)
             </p>
           </div>
         </div>

@@ -165,45 +165,7 @@ function App() {
         )}
       </div>
 
-      {/* Pitch Explainer Modal (Sleek minimalist pill) */}
-      {demoState === 6 && (
-        <div 
-          onClick={() => setDemoState(7)}
-          style={{
-            position: 'fixed',
-            bottom: '40px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 9999,
-            background: 'rgba(0, 0, 0, 0.6)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255,255,255,0.15)',
-            borderRadius: '100px',
-            padding: '12px 24px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-            animation: 'smoothFadeIn 0.5s ease-out forwards',
-            cursor: 'pointer',
-            transition: 'background 0.2s, transform 0.2s'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-            e.currentTarget.style.transform = 'translateX(-50%) scale(1.05)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'rgba(0, 0, 0, 0.6)';
-            e.currentTarget.style.transform = 'translateX(-50%) scale(1)';
-          }}
-        >
-          <span style={{ fontSize: '1.2rem', color: '#ff9f0a' }}>⏸️</span>
-          <span style={{ color: '#f5f5f7', fontWeight: '500', fontSize: '0.95rem', letterSpacing: '0.5px' }}>
-            Demo Paused — Press Space to Auto-Terminate
-          </span>
-        </div>
-      )}
+      {/* The pitch pause pill has been moved inside the PhoneFrame (RiskWarning) for a cleaner UI */}
     </div>
   );
 }
