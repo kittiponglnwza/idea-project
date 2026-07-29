@@ -29,7 +29,7 @@ export default function MicroLearning({ onReset, onViewDocument }) {
       </h1>
       
       <p style={{ color: '#475569', fontSize: '1rem', lineHeight: '1.6', marginBottom: '2rem' }}>
-        ระบบ AI ของเราตรวจพบ <b>"เจตนาหลอกลวง" (Risk Score > 80%)</b> จากบริบทการสนทนา ดังนี้:
+        ระบบ AI ของเราตรวจพบ <b>"เจตนาหลอกลวง" (Risk Score &gt; 80%)</b> จากบริบทการสนทนา ดังนี้:
       </p>
 
       <div style={{ background: '#f8fafc', padding: '1.2rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '1rem' }}>
