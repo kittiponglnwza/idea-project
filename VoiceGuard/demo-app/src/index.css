@@ -352,6 +352,7 @@ input:checked + .slider:before { transform: translateX(20px); }
     display: flex;
     justify-content: center;
     zoom: 1; /* reset zoom if it was set */
+    order: -1; /* Make phone appear at the top on mobile */
   }
   
   .phone-bezel {
