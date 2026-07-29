@@ -3,7 +3,7 @@ import RiskWarning from './RiskWarning';
 import { useState, useEffect } from 'react';
 import { Mic, Grip, Volume2, Plus, Video, Pause, Phone } from 'lucide-react';
 
-export default function ActiveCall({ demoState, isOptIn, onHangup }) {
+export default function ActiveCall({ demoState, isOptIn, onHangup, onAcknowledge }) {
   const [timer, setTimer] = useState("00:00");
 
   useEffect(() => {
@@ -76,7 +76,12 @@ export default function ActiveCall({ demoState, isOptIn, onHangup }) {
 
       {/* Floating Overlays */}
       <LiveCaption demoState={demoState} />
-      <RiskWarning show={demoState >= 6} isOptIn={isOptIn} onHangup={onHangup} />
+      <RiskWarning 
+        demoState={demoState} 
+        isOptIn={isOptIn} 
+        onHangup={onHangup} 
+        onAcknowledge={onAcknowledge} 
+      />
       
     </div>
   );

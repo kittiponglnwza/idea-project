@@ -14,7 +14,7 @@ const SCAM_SCRIPT = [
   "และ", "ห้ามบอกใคร", "เด็ดขาดนะ"
 ];
 
-export function useRealTimeAI(isLiveMode, onRiskExceeded) {
+export function useRealTimeAI(isLiveMode, isPaused, onMediumRisk, onHighRisk) {
   const [transcript, setTranscript] = useState('');
   const [interimTranscript, setInterimTranscript] = useState('');
   const [riskScore, setRiskScore] = useState(0);
@@ -23,6 +23,16 @@ export function useRealTimeAI(isLiveMode, onRiskExceeded) {
   const timerRef = useRef(null);
   const timeoutRef = useRef(null);
   const wordIndexRef = useRef(0);
+  const hasTriggeredMediumRef = useRef(false);
+
+  // Handle pause/resume
+  useEffect(() => {
+    if (isPaused) {
+      window.speechSynthesis.pause();
+    } else {
+      window.speechSynthesis.resume();
+    }
+  }, [isPaused]);
 
   useEffect(() => {
     if (!isLiveMode) {
@@ -57,12 +67,18 @@ export function useRealTimeAI(isLiveMode, onRiskExceeded) {
     setInterimTranscript('');
     setRiskScore(0);
     wordIndexRef.current = 0;
+    hasTriggeredMediumRef.current = false;
 
     let currentTranscript = "";
 
     // Delay the scammer text typing by 4 seconds to let the system warning finish playing
     timeoutRef.current = setTimeout(() => {
       timerRef.current = setInterval(() => {
+        // If paused, don't advance the transcript
+        if (window.speechSynthesis.paused) {
+          return;
+        }
+
         if (wordIndexRef.current >= SCAM_SCRIPT.length) {
           clearInterval(timerRef.current);
           return;
@@ -88,10 +104,17 @@ export function useRealTimeAI(isLiveMode, onRiskExceeded) {
           return [...prevLogs, ...newLogs];
         });
 
-        if (riskData.score > 85 && onRiskExceeded) {
+        // Trigger Medium Risk (60-80%)
+        if (riskData.score >= 60 && riskData.score <= 80 && !hasTriggeredMediumRef.current && onMediumRisk) {
+          hasTriggeredMediumRef.current = true;
+          onMediumRisk();
+        }
+
+        // Trigger High Risk (>80%)
+        if (riskData.score > 80 && onHighRisk) {
           clearInterval(timerRef.current);
           window.speechSynthesis.cancel(); // Stop talking when cut
-          onRiskExceeded();
+          onHighRisk();
         }
 
         wordIndexRef.current += 1;

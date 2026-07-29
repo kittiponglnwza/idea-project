@@ -14,38 +14,50 @@ import ActiveCall from './components/ActiveCall';
 import MicroLearning from './components/MicroLearning';
 
 function App() {
-  // Granular State Machine (0 to 7, 8 = document page)
+  // Granular State Machine
+  // 0: IncomingCall
+  // 1: ActiveCall (Live mode)
+  // 6: Medium Risk Warning
+  // 6.5: Medium Risk Acknowledged (Call resumes)
+  // 7: High Risk Warning
+  // 8: MicroLearning
+  // 9: DocumentPage
   const [demoState, setDemoState] = useState(0);
   const [isOptIn, setIsOptIn] = useState(true);
+  const [isAiPaused, setIsAiPaused] = useState(false);
   
-  // Auto-trigger simulation when call is active (State 1 to 5)
-  const isLiveMode = demoState >= 1 && demoState < 6;
+  // Auto-trigger simulation when call is active
+  const isLiveMode = demoState >= 1 && demoState < 7;
 
-  // Trigger when Live AI detects high risk
-  const handleRiskExceeded = useCallback(() => {
-    setDemoState(6); // Jump straight to Warning state
+  const handleMediumRisk = useCallback(() => {
+    setDemoState(6);
+    setIsAiPaused(true);
   }, []);
 
-  // Pitch Pause Mode: Instead of auto-terminating after 2.5s, 
-  // we wait for the presenter to click "Continue" or press Space.
-  useEffect(() => {
-    // Timeout removed to allow judges to read the screen and presenter to explain.
-  }, [demoState, isOptIn]);
+  const handleHighRisk = useCallback(() => {
+    setDemoState(7);
+    setIsAiPaused(false);
+  }, []);
 
-  const { interimTranscript, riskScore, aiLogs } = useRealTimeAI(isLiveMode, handleRiskExceeded);
+  const handleAcknowledgeMediumRisk = () => {
+    setDemoState(6.5);
+    setIsAiPaused(false);
+  };
+
+  const { interimTranscript, riskScore, aiLogs } = useRealTimeAI(isLiveMode, isAiPaused, handleMediumRisk, handleHighRisk);
 
   const handleKeyPress = useCallback((event) => {
-    if (demoState === 8) return; // Don't advance when on document page
+    if (demoState === 9) return; // Don't advance when on document page
     if (event.code === 'Space') {
       event.preventDefault();
       setDemoState((prev) => {
-        if (prev >= 7) return prev;
+        if (prev >= 8) return prev;
         
-        // Auto-terminate logic at state 6 (Warning)
-        if (prev === 6 && isOptIn) {
-          return 7; // Auto-cut
-        } else if (prev === 6 && !isOptIn) {
-          return 6; // Wait for manual hangup button
+        // Auto-terminate logic at state 7 (High Risk)
+        if (prev === 7 && isOptIn) {
+          return 8; // Auto-cut
+        } else if (prev === 7 && !isOptIn) {
+          return 7; // Wait for manual hangup button
         }
         
         return prev + 1;
@@ -61,31 +73,32 @@ function App() {
   }, [handleKeyPress]);
 
   const handleManualHangup = () => {
-    setDemoState(7);
+    setDemoState(8);
   };
 
   const handleReset = () => {
     setDemoState(0);
   };
 
-  // State 8 = full-page document view
-  if (demoState === 8) {
-    return <DocumentPage onBack={() => setDemoState(7)} />;
+  // State 9 = full-page document view
+  if (demoState === 9) {
+    return <DocumentPage onBack={() => setDemoState(8)} />;
   }
 
   // Render the appropriate screen inside the Phone Frame
   const renderPhoneScreen = () => {
     if (demoState === 0) return <IncomingCall onAnswer={() => setDemoState(1)} />;
-    if (demoState >= 1 && demoState <= 6) {
+    if (demoState >= 1 && demoState <= 7) {
       return (
         <ActiveCall 
           demoState={demoState} 
           isOptIn={isOptIn} 
           onHangup={handleManualHangup} 
+          onAcknowledge={handleAcknowledgeMediumRisk}
         />
       );
     }
-    if (demoState === 7) return <MicroLearning onReset={handleReset} onViewDocument={() => setDemoState(8)} />;
+    if (demoState === 8) return <MicroLearning onReset={handleReset} onViewDocument={() => setDemoState(9)} />;
     
     return <IncomingCall onAnswer={() => setDemoState(1)} />;
   };
@@ -107,14 +120,14 @@ function App() {
       
       {/* Column 2: Victim's Phone (Hero Center) */}
       <div className="phone-container">
-        <PhoneFrame isShake={false}>
+        <PhoneFrame isShake={demoState === 6}>
           {renderPhoneScreen()}
         </PhoneFrame>
       </div>
 
       {/* Column 3: Family Monitoring Dashboard (Floating Widget) */}
       <div className="widget-right" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        {demoState >= 6 && (
+        {demoState >= 7 && (
           <FamilyDashboard 
             demoState={demoState} 
             isOptIn={isOptIn} 
@@ -123,9 +136,9 @@ function App() {
         )}
 
         {/* Premium Document Button (Sits under the dashboard) */}
-        {demoState === 7 && (
+        {demoState === 8 && (
           <div 
-            onClick={() => setDemoState(8)}
+            onClick={() => setDemoState(9)}
             style={{
               background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02))',
               backdropFilter: 'blur(24px)',
@@ -164,8 +177,6 @@ function App() {
           </div>
         )}
       </div>
-
-      {/* The pitch pause pill has been moved inside the PhoneFrame (RiskWarning) for a cleaner UI */}
     </div>
   );
 }
