@@ -7,7 +7,8 @@ export default function MicroLearning({ onReset, onViewDocument }) {
       padding: '4rem 1.5rem 2rem 1.5rem',
       display: 'flex',
       flexDirection: 'column',
-      animation: 'fadeIn 0.5s ease-in'
+      animation: 'fadeIn 0.5s ease-in',
+      overflowY: 'auto'
     }}>
       <div style={{
         background: '#ef4444',
@@ -28,7 +29,7 @@ export default function MicroLearning({ onReset, onViewDocument }) {
       </h1>
       
       <p style={{ color: '#475569', fontSize: '1rem', lineHeight: '1.6', marginBottom: '2rem' }}>
-        ระบบ AI ของเราตรวจพบ <b>"เจตนาหลอกลวง" (Risk Score 95%)</b> จากบริบทการสนทนา ดังนี้:
+        ระบบ AI ของเราตรวจพบ <b>"เจตนาหลอกลวง" (Risk Score > 80%)</b> จากบริบทการสนทนา ดังนี้:
       </p>
 
       <div style={{ background: '#f8fafc', padding: '1.2rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '1rem' }}>
@@ -47,12 +48,13 @@ export default function MicroLearning({ onReset, onViewDocument }) {
 
       <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <button 
+          onClick={onViewDocument}
           style={{
-            background: '#22c55e', color: 'white', padding: '1rem', borderRadius: '12px',
+            background: '#0ea5e9', color: 'white', padding: '1rem', borderRadius: '12px',
             border: 'none', fontWeight: 'bold', fontSize: '1.1rem', cursor: 'pointer',
-            boxShadow: '0 4px 10px rgba(34, 197, 94, 0.3)'
+            boxShadow: '0 4px 10px rgba(14, 165, 233, 0.3)', display: 'flex', justifyContent: 'center', gap: '8px'
           }}>
-          แจ้งความออนไลน์ (thaipoliceonline.com)
+          <span>📄</span> ดู Business Plan & PDPA
         </button>
 
         <button 

@@ -34,7 +34,7 @@ body {
   font-family: var(--font-main);
   background-color: var(--bg-desktop);
   color: var(--text-main);
-  min-height: 100vh;
+  min-height: 100dvh;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -45,7 +45,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   position: relative;
   overflow: hidden;
 }
@@ -334,7 +334,7 @@ input:checked + .slider:before { transform: translateX(20px); }
 
   .god-mode-layout {
     flex-direction: column;
-    height: 100vh;
+    height: 100dvh;
     padding: 0;
     gap: 0;
     overflow: hidden;
@@ -348,7 +348,7 @@ input:checked + .slider:before { transform: translateX(20px); }
   
   .phone-container {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     zoom: 1; 
@@ -358,7 +358,7 @@ input:checked + .slider:before { transform: translateX(20px); }
   /* Remove fake phone bezel, make it fill the real screen */
   .phone-bezel {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     border-radius: 0;
     box-shadow: none;
     margin: 0;
