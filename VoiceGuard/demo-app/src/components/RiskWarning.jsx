@@ -160,7 +160,7 @@ export default function RiskWarning({ demoState, onHangup, onAcknowledge, onCanc
               e.stopPropagation();
               hasAutoHungUp.current = true;
               clearInterval(countdownRef.current);
-              if (onCancel) onCancel();
+              onHangup();
             }}
             style={{
               background: 'transparent',
