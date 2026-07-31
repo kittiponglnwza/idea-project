@@ -76,6 +76,11 @@ function App() {
     setDemoState(8);
   };
 
+  const handleCancelAutoCut = () => {
+    setDemoState(6.5);
+    setIsAiPaused(false);
+  };
+
   const handleReset = () => {
     setDemoState(0);
   };
@@ -95,6 +100,7 @@ function App() {
           isOptIn={isOptIn} 
           onHangup={handleManualHangup} 
           onAcknowledge={handleAcknowledgeMediumRisk}
+          onCancel={handleCancelAutoCut}
         />
       );
     }

@@ -3,7 +3,7 @@ import RiskWarning from './RiskWarning';
 import { useState, useEffect } from 'react';
 import { Mic, Grip, Volume2, Plus, Video, Pause, Phone } from 'lucide-react';
 
-export default function ActiveCall({ demoState, isOptIn, onHangup, onAcknowledge }) {
+export default function ActiveCall({ demoState, isOptIn, onHangup, onAcknowledge, onCancel }) {
   const [timer, setTimer] = useState("00:00");
 
   useEffect(() => {
@@ -80,7 +80,8 @@ export default function ActiveCall({ demoState, isOptIn, onHangup, onAcknowledge
         demoState={demoState} 
         isOptIn={isOptIn} 
         onHangup={onHangup} 
-        onAcknowledge={onAcknowledge} 
+        onAcknowledge={onAcknowledge}
+        onCancel={onCancel}
       />
       
     </div>

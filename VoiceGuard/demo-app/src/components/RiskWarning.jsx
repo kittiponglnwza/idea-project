@@ -1,6 +1,34 @@
-import { ShieldAlert, AlertTriangle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ShieldAlert, AlertTriangle, X } from 'lucide-react';
 
-export default function RiskWarning({ demoState, onHangup, onAcknowledge, isOptIn }) {
+export default function RiskWarning({ demoState, onHangup, onAcknowledge, onCancel, isOptIn }) {
+  const [countdown, setCountdown] = useState(10);
+  const countdownRef = useRef(null);
+  const hasAutoHungUp = useRef(false);
+
+  // Countdown timer for auto-cut when isOptIn and high risk
+  useEffect(() => {
+    if (demoState === 7 && isOptIn) {
+      setCountdown(10);
+      hasAutoHungUp.current = false;
+      countdownRef.current = setInterval(() => {
+        setCountdown(prev => {
+          if (prev <= 1) {
+            clearInterval(countdownRef.current);
+            if (!hasAutoHungUp.current) {
+              hasAutoHungUp.current = true;
+              onHangup();
+            }
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else {
+      clearInterval(countdownRef.current);
+    }
+    return () => clearInterval(countdownRef.current);
+  }, [demoState, isOptIn, onHangup]);
   // Show only in states 6 (Medium) and 7 (High)
   if (demoState !== 6 && demoState !== 7) return null;
 
@@ -94,31 +122,83 @@ export default function RiskWarning({ demoState, onHangup, onAcknowledge, isOptI
       )}
       
       {isOptIn && (
-        <div 
-          onClick={onHangup}
-          style={{ 
-            marginTop: '48px', 
-            textAlign: 'center', 
-            animation: 'smoothFadeIn 0.5s ease-out 0.2s both',
-            cursor: 'pointer'
-          }}>
-          <div style={{ 
-            background: 'rgba(0,0,0,0.5)', 
-            padding: '12px 24px', 
-            borderRadius: '100px', 
-            border: '1px solid rgba(255,255,255,0.2)',
-            display: 'inline-block',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-            transition: 'background 0.2s'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.7)'}
-          onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
-          >
-            <p style={{ color: 'white', fontWeight: '500', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
-              <span style={{ display: 'inline-block', animation: 'edgePulse 1.5s infinite ease-in-out' }}>⏸️</span> 
-              ระบบจะตัดสายอัตโนมัติ...
-            </p>
+        <div style={{ 
+          marginTop: '48px', 
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '16px',
+          width: '100%',
+          animation: 'smoothFadeIn 0.5s ease-out 0.2s both'
+        }}>
+          {/* Countdown auto-cut indicator */}
+          <div 
+            onClick={onHangup}
+            style={{ 
+              textAlign: 'center', 
+              cursor: 'pointer',
+              width: '100%'
+            }}>
+            <div style={{ 
+              background: 'rgba(0,0,0,0.5)', 
+              padding: '14px 24px', 
+              borderRadius: '100px', 
+              border: '1px solid rgba(255,255,255,0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+              transition: 'background 0.2s'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.7)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
+            >
+              <span style={{ display: 'inline-block', animation: 'edgePulse 1.5s infinite ease-in-out' }}>⏸️</span>
+              <p style={{ color: 'white', fontWeight: '500', fontSize: '1rem', margin: 0 }}>
+                ระบบจะตัดสายอัตโนมัติใน {countdown} วินาที
+              </p>
+            </div>
           </div>
+
+          {/* Cancel button */}
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              clearInterval(countdownRef.current);
+              if (onCancel) onCancel();
+            }}
+            style={{
+              background: 'transparent',
+              color: 'rgba(255,255,255,0.85)',
+              border: '1px solid rgba(255,255,255,0.3)',
+              padding: '12px 32px',
+              borderRadius: '100px',
+              fontSize: '1rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              transition: 'all 0.2s ease',
+              backdropFilter: 'blur(8px)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)';
+              e.currentTarget.style.color = 'white';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+              e.currentTarget.style.color = 'rgba(255,255,255,0.85)';
+            }}
+          >
+            <X size={18} />
+            ยกเลิก
+          </button>
         </div>
       )}
     </div>

@@ -13,9 +13,9 @@ export default function DocumentPage({ onBack }) {
           entry.target.classList.remove('opacity-0', 'translate-y-12');
         }
       });
-    }, { 
+    }, {
       threshold: 0.1,
-      root: containerRef.current 
+      root: containerRef.current
     });
 
     const sections = document.querySelectorAll('.doc-section');
@@ -28,7 +28,7 @@ export default function DocumentPage({ onBack }) {
     const element = document.getElementById(id);
     const container = containerRef.current;
     if (element && container) {
-      const topPos = element.offsetTop - 100; 
+      const topPos = element.offsetTop - 100;
       container.scrollTo({
         top: topPos,
         behavior: 'smooth'
@@ -79,7 +79,7 @@ export default function DocumentPage({ onBack }) {
             VoiceGuard
           </h1>
           <p className="text-lg md:text-2xl text-[#86868b] max-w-2xl mx-auto leading-relaxed font-medium">
-            AI Assistant ระหว่างการโทร<br/>ปกป้องผู้สูงอายุจากการหลอกลวงแบบ Real-time
+            AI Assistant ระหว่างการโทร<br />ปกป้องผู้สูงอายุจากการหลอกลวงแบบ Real-time
           </p>
         </div>
 
@@ -106,7 +106,7 @@ export default function DocumentPage({ onBack }) {
             <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5 flex flex-col justify-center">
               <h4 className="text-[#f5f5f7] text-lg font-semibold mb-2">The 40B Baht Pain</h4>
               <p className="text-[#86868b] leading-relaxed text-sm md:text-base">
-                ความเสียหายจากคดีหลอกลวงออนไลน์สูงถึง <strong className="text-[#ff3b30]">4 หมื่นล้านบาท</strong> โดยผู้สูงอายุเป็นกลุ่มที่สูญเสียเงินต่อหัวสูงสุด
+                ความเสียหายจากคดีหลอกลวงออนไลน์สูงถึง <strong className="text-[#ff3b30]">8 หมื่นล้านบาท</strong> โดยผู้สูงอายุเป็นกลุ่มที่สูญเสียเงินต่อหัวสูงสุด
               </p>
             </div>
             <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5 flex flex-col justify-center">
@@ -153,15 +153,28 @@ export default function DocumentPage({ onBack }) {
             <h4 className="text-[#f5f5f7] text-xl font-semibold mb-4">The Intervention (การแทรกแซง)</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-[#2d2216] p-6 rounded-2xl">
-                <h5 className="text-[#ff9f0a] font-semibold text-lg mb-2">⚠️ Medium Risk (40-85%)</h5>
+                <h5 className="text-[#ff9f0a] font-semibold text-lg mb-2">⚠️ Medium Risk (60-80%)</h5>
                 <p className="text-[#86868b] text-sm md:text-base leading-relaxed">
-                  Intrusive Warning: หน้าจอกะพริบ บล็อกเสียงสนทนาชั่วคราว ดึงสติผู้สูงอายุ
+                  Intrusive Warning: เครื่องสั่นเตือนต่อเนื่อง
+                  พร้อมเด้งข้อความแจ้ง
+                  เตือน ฉุกเฉินเต็มหน้าจอ
+                  (สไตล์ Cell Broadcast)
+                  บังคับให้ผู้ใช้อ่าน และ ต้อง
+                  กด ‘รับทราบ ก่อนระบบถึง
+                  จะยอมให้คุยสายต่อได้
                 </p>
               </div>
               <div className="bg-[#321414] p-6 rounded-2xl">
-                <h5 className="text-[#ff3b30] font-semibold text-lg mb-2">🚨 High Risk (&gt;85%)</h5>
+                <h5 className="text-[#ff3b30] font-semibold text-lg mb-2">🚨 High Risk (&gt;80%)</h5>
                 <p className="text-[#86868b] text-sm md:text-base leading-relaxed">
-                  Auto-Terminate: ตัดสายทิ้งทันที (ถ้าลูกหลานเปิด Opt-in) พร้อมส่ง SOS หาครอบครัว
+                  แจ้งเตือนระดับสูงสุด!
+                  หน้าจอระบุชัดเจนว่า
+                  “สายนี้อันตรายมาก”
+                  ให้สิทธิ์ผู้ใช้ตัดสินใจขั้น
+                  สุดท้ายว่าจะตัดสายทิ้ง
+                  ทันทีหรือไม่ ส่ง SMS แบบ
+                  ฉุกเฉินหาลูกหลาน เพื่อให้
+                  รีบติดต่อกลับมาช่วยเหลือ
                 </p>
               </div>
             </div>
@@ -174,7 +187,7 @@ export default function DocumentPage({ onBack }) {
             <Scale size={28} className="text-[#ff375f]" />
             <h2 className="text-2xl md:text-3xl font-bold">4. กฎหมาย PDPA และความเป็นส่วนตัว</h2>
           </div>
-          
+
           <div className="bg-[#1d1d1f] rounded-3xl p-6 md:p-8 hover:scale-[1.01] hover:bg-[#252527] transition-all duration-300 border border-white/5 border-l-4 border-l-[#ff375f] mb-6">
             <h4 className="text-[#f5f5f7] text-xl font-semibold mb-6">3-Layer PDPA Defense Strategy</h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -249,7 +262,7 @@ export default function DocumentPage({ onBack }) {
             <p className="text-[#86868b] text-base md:text-lg leading-relaxed mb-6">
               เราไม่เก็บเงินผู้สูงอายุ (Free for Vulnerable) แต่ทำรายได้ผ่านโมเดล B2B ร่วมกับพันธมิตรองค์กร:
             </p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-white/5 p-5 rounded-2xl">
                 <div className="text-3xl mb-3">🏦</div>
