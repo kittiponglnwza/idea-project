@@ -77,8 +77,8 @@ function App() {
   };
 
   const handleCancelAutoCut = () => {
-    setDemoState(6.5);
-    setIsAiPaused(false);
+    window.speechSynthesis.cancel();
+    setDemoState(7.5);
   };
 
   const handleReset = () => {
@@ -93,7 +93,7 @@ function App() {
   // Render the appropriate screen inside the Phone Frame
   const renderPhoneScreen = () => {
     if (demoState === 0) return <IncomingCall onAnswer={() => setDemoState(1)} />;
-    if (demoState >= 1 && demoState <= 7) {
+    if (demoState >= 1 && demoState <= 7.5) {
       return (
         <ActiveCall 
           demoState={demoState} 
