@@ -131,14 +131,11 @@ export default function RiskWarning({ demoState, onHangup, onAcknowledge, onCanc
           width: '100%',
           animation: 'smoothFadeIn 0.5s ease-out 0.2s both'
         }}>
-          {/* Countdown auto-cut indicator */}
-          <div 
-            onClick={onHangup}
-            style={{ 
-              textAlign: 'center', 
-              cursor: 'pointer',
-              width: '100%'
-            }}>
+          {/* Countdown auto-cut indicator (display only, no click) */}
+          <div style={{ 
+            textAlign: 'center', 
+            width: '100%'
+          }}>
             <div style={{ 
               background: 'rgba(0,0,0,0.5)', 
               padding: '14px 24px', 
@@ -149,11 +146,7 @@ export default function RiskWarning({ demoState, onHangup, onAcknowledge, onCanc
               justifyContent: 'center',
               gap: '10px',
               boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-              transition: 'background 0.2s'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.7)'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
-            >
+            }}>
               <span style={{ display: 'inline-block', animation: 'edgePulse 1.5s infinite ease-in-out' }}>⏸️</span>
               <p style={{ color: 'white', fontWeight: '500', fontSize: '1rem', margin: 0 }}>
                 ระบบจะตัดสายอัตโนมัติใน {countdown} วินาที
@@ -165,6 +158,7 @@ export default function RiskWarning({ demoState, onHangup, onAcknowledge, onCanc
           <button 
             onClick={(e) => {
               e.stopPropagation();
+              hasAutoHungUp.current = true;
               clearInterval(countdownRef.current);
               if (onCancel) onCancel();
             }}
